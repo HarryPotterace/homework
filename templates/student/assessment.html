@@ -33,12 +33,13 @@
         <form method="post" class="vstack gap-4 mt-4">
           <input type="hidden" name="scale_code" value="{{ active_scale }}">
           {% for question in scale.questions %}
+          {% set question_index = loop.index %}
           <fieldset class="assessment-block">
-            <legend class="fs-6 fw-semibold">{{ loop.index }}. {{ question }}</legend>
+            <legend class="fs-6 fw-semibold">{{ question_index }}. {{ question }}</legend>
             <div class="d-flex flex-wrap gap-3 mt-3">
               {% for value, label in scale.options %}
               <label class="option-pill">
-                <input type="radio" name="q{{ loop.parent.index }}" value="{{ value }}" required>
+                <input type="radio" name="q{{ question_index }}" value="{{ value }}" required>
                 <span>{{ label }}</span>
               </label>
               {% endfor %}

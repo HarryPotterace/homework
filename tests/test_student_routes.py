@@ -1,4 +1,5 @@
 from app import create_app, db
+from app.models import Appointment, AssessmentRecord, CounselorSchedule, VentPost
 
 
 def build_app():
@@ -89,3 +90,98 @@ def test_appointments_page_exposes_schedule_api_endpoint():
 
     assert response.status_code == 200
     assert b"data-schedule-api" in response.data
+
+
+def test_assessment_submission_creates_record():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+    login_student(client)
+
+    response = client.post(
+        "/assessment",
+        data={
+            "scale_code": "PHQ-9",
+            "q1": "2",
+            "q2": "2",
+            "q3": "1",
+            "q4": "1",
+            "q5": "2",
+            "q6": "0",
+            "q7": "1",
+            "q8": "1",
+            "q9": "1",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert "测评结果已保存".encode("utf-8") in response.data
+    with app.app_context():
+        record = AssessmentRecord.query.one()
+        assert record.scale_code == "PHQ-9"
+        assert record.score == 11
+
+
+def test_vent_post_generates_emotion_label():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+    login_student(client)
+
+    response = client.post(
+        "/vent",
+        data={
+            "title": "最近状态不太好",
+            "content": "最近很难受，睡不着，也不想和任何人说话，感觉撑不下去了。",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert "需关注".encode("utf-8") in response.data
+    with app.app_context():
+        post = VentPost.query.one()
+        assert post.emotion == "需关注"
+        assert post.risk_level == "high"
+
+
+def test_student_can_create_and_cancel_appointment():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+    login_student(client)
+
+    with app.app_context():
+        schedule = CounselorSchedule.query.filter_by(is_available=True).first()
+        schedule_id = schedule.id
+
+    create_response = client.post(
+        "/appointments",
+        data={
+            "schedule_id": str(schedule_id),
+            "note": "希望安排在下午前沟通。",
+        },
+        follow_redirects=True,
+    )
+
+    assert create_response.status_code == 200
+    assert "预约申请已提交".encode("utf-8") in create_response.data
+
+    with app.app_context():
+        appointment = Appointment.query.one()
+        appointment_id = appointment.id
+        assert appointment.status == "待确认"
+        assert appointment.schedule.is_available is False
+
+    cancel_response = client.post(
+        f"/appointments/{appointment_id}/cancel",
+        follow_redirects=True,
+    )
+
+    assert cancel_response.status_code == 200
+    assert "预约已取消".encode("utf-8") in cancel_response.data
+    with app.app_context():
+        appointment = Appointment.query.get(appointment_id)
+        assert appointment.status == "已取消"
+        assert appointment.schedule.is_available is True
