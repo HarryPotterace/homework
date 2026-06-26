@@ -60,7 +60,7 @@ python -m pytest -q
 ```
 
 结果为：
-- `19 passed in 7.05s`
+- `19 passed`
 - 适用分支：`feat/report-docs`（已与 `feat/backend-core`、`feat/student-ui`、`feat/admin-screen` 对齐后验证）
 
 ### 5.2 覆盖内容

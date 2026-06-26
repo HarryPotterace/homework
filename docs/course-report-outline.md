@@ -141,3 +141,5 @@
   - `docs/assets/system-flow.md`
   - `docs/assets/er-diagram.md`
   - `docs/assets/class-tree.md`
+- 当前正文底稿文件：
+  - `docs/course-report-draft.md`

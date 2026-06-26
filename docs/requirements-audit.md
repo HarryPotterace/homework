@@ -21,6 +21,7 @@
 | 行为采集 move/click/keydown | 已实现，待人工联调复核 | `static/js/behavior.js` |
 | 预约 AJAX 获取/校验时段 | 已实现异步获取，前端可加载时段 | `app/routes/api.py`、`static/js/schedules.js` |
 | 报告章节结构 | 已细化到章节级写作提纲 | `docs/course-report-outline.md` |
+| 报告正文初稿 | 已建立首版，可直接转写到 Word | `docs/course-report-draft.md` |
 | 报告格式要求 | 已整理到可直接照写的底稿 | `docs/course-report-outline.md` |
 | 研究背景、现状、方法与创新、结果分析、心得 | 已锁定写作边界，待转写为正式 Word 正文 | `docs/course-report-outline.md` |
 | 参考文献与算法依据 | 未完成 | 需补充到 `docs/course-report-outline.md` 与设计说明 |
@@ -33,8 +34,8 @@
 ## 3. 当前结论
 - 现有技术路线没有偏离老师原始要求，三端、核心功能、Session、前端校验、行为采集和预约异步接口都已经覆盖到代码层。
 - 当前主要缺口不在功能主干，而在“最终交付闭环”：
-  - 正式 `Word` 报告正文尚未完成。
-  - 参考文献、方法依据、创新点和结果分析尚未转写成正式正文。
+  - 正式 `Word` 报告尚未排版导出。
+  - 正文底稿已完成首版，但图号、表号和插图尚未回填。
   - 结构图源文件已生成，但尚未导出为报告插图。
   - 页面截图和终端测试截图仍未人工采集。
   - 兼容性测试尚未执行实机验证。
