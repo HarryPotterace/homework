@@ -182,6 +182,6 @@ def test_student_can_create_and_cancel_appointment():
     assert cancel_response.status_code == 200
     assert "预约已取消".encode("utf-8") in cancel_response.data
     with app.app_context():
-        appointment = Appointment.query.get(appointment_id)
+        appointment = db.session.get(Appointment, appointment_id)
         assert appointment.status == "已取消"
         assert appointment.schedule.is_available is True

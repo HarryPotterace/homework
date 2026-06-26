@@ -1,6 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .extensions import db
+
+
+def utc_now():
+    # Preserve naive UTC storage for the existing schema.
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class User(db.Model):
@@ -12,7 +17,7 @@ class User(db.Model):
     nickname = db.Column(db.String(50), nullable=False)
     contact = db.Column(db.String(50), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
 
 class Admin(db.Model):
@@ -24,7 +29,7 @@ class Admin(db.Model):
     role = db.Column(db.String(20), nullable=False, default="consultant")
     contact = db.Column(db.String(50), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
 
 class Scale(db.Model):
@@ -55,7 +60,7 @@ class AssessmentRecord(db.Model):
     score = db.Column(db.Integer, nullable=False)
     result_level = db.Column(db.String(50), nullable=False)
     advice = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
     user = db.relationship("User", backref="assessment_records")
 
@@ -70,7 +75,7 @@ class VentPost(db.Model):
     emotion = db.Column(db.String(20), nullable=False)
     risk_level = db.Column(db.String(20), nullable=False)
     is_anonymous = db.Column(db.Boolean, nullable=False, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
     user = db.relationship("User", backref="vent_posts")
 
@@ -86,7 +91,7 @@ class BehaviorLog(db.Model):
     pause_count = db.Column(db.Integer, nullable=False, default=0)
     emotion = db.Column(db.String(20), nullable=False)
     ui_mode = db.Column(db.String(20), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
     user = db.relationship("User", backref="behavior_logs")
 
@@ -110,7 +115,7 @@ class Appointment(db.Model):
     schedule_id = db.Column(db.Integer, db.ForeignKey("counselors_schedule.id"), nullable=False)
     status = db.Column(db.String(20), nullable=False, default="待确认")
     note = db.Column(db.String(255), nullable=False, default="")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now, nullable=False)
 
     user = db.relationship("User", backref="appointments")
     schedule = db.relationship("CounselorSchedule", backref="appointments")

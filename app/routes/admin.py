@@ -66,7 +66,7 @@ def vents():
 @admin_login_required
 def appointments():
     if request.method == "POST":
-        appointment = Appointment.query.get_or_404(int(request.form["appointment_id"]))
+        appointment = db.get_or_404(Appointment, int(request.form["appointment_id"]))
         appointment.status = request.form["status"]
         db.session.commit()
         flash("预约状态已更新。", "success")

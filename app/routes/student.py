@@ -69,7 +69,7 @@ def logout():
 @student_bp.route("/profile", methods=["GET", "POST"])
 @student_login_required
 def profile():
-    user = User.query.get_or_404(session["user_id"])
+    user = db.get_or_404(User, session["user_id"])
     if request.method == "POST":
         user.nickname = request.form["nickname"].strip()
         user.contact = request.form["contact"].strip()
@@ -149,7 +149,7 @@ def emotion():
 @student_login_required
 def appointments():
     if request.method == "POST":
-        schedule = CounselorSchedule.query.get_or_404(int(request.form["schedule_id"]))
+        schedule = db.get_or_404(CounselorSchedule, int(request.form["schedule_id"]))
         if not schedule.is_available:
             flash("该时段已被预约，请重新选择。", "danger")
             return redirect(url_for("student.appointments"))
@@ -178,7 +178,7 @@ def appointments():
 @student_bp.route("/appointments/<int:appointment_id>/cancel", methods=["POST"])
 @student_login_required
 def cancel_appointment(appointment_id):
-    appointment = Appointment.query.get_or_404(appointment_id)
+    appointment = db.get_or_404(Appointment, appointment_id)
     if appointment.user_id != session["user_id"]:
         flash("你无权取消该预约。", "danger")
         return redirect(url_for("student.appointments"))

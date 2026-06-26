@@ -1,8 +1,8 @@
 USE mental_health_system;
 
 INSERT INTO admins (username, name, role, contact, password_hash) VALUES
-('consultant', '陈老师', 'consultant', 'chen@example.com', 'scrypt:32768:8:1$placeholder$consultant_hash'),
-('admin', '系统管理员', 'admin', 'admin@example.com', 'scrypt:32768:8:1$placeholder$admin_hash');
+('consultant', '陈老师', 'consultant', 'chen@example.com', 'scrypt:32768:8:1$3NRUUHJagnXZDbGi$5839306caad2a320ce59389f26f877d3d59ae8a8d52aae315206f9dbbeadb12fcb52adf96c9349ff65bc4df4ae9b9d3b05f08b83fdd5a8e121209d05bbcbde53'),
+('admin', '系统管理员', 'admin', 'admin@example.com', 'scrypt:32768:8:1$Td2VMGzmbIgdeMUM$097747d7116345639de11056479f7047e250bf2f8603aa59edc8140b14138a56f1df7ccb640cacbc38182c0947c52548bc742bec76f31175bac375dd488a550e');
 
 INSERT INTO scales (code, name, description) VALUES
 ('PHQ-9', 'PHQ-9 抑郁量表', '用于初步筛查近期抑郁情绪倾向。'),
