@@ -121,4 +121,9 @@
 </div>
 {% endblock %}
 
+{% block scripts %}
+{{ super() }}
+{% block admin_scripts %}{% endblock %}
+{% endblock %}
+
 {% block admin_nav_key %}{% endblock %}

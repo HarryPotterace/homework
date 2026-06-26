@@ -3,121 +3,190 @@
 {% block title %}后台总览{% endblock %}
 {% block admin_nav_key %}dashboard{% endblock %}
 {% block admin_page_title %}心理中心后台{% endblock %}
-{% block admin_page_intro %}集中查看学生测评、匿名树洞和预约咨询的核心统计，适合作为值班与周报入口。{% endblock %}
+{% block admin_page_intro %}围绕预约确认、树洞关注和异常情绪筛查构建的处理工作台，适合值班与日常复盘。{% endblock %}
 {% block admin_page_actions %}
-<a class="btn btn-outline-primary rounded-pill px-4" href="{{ url_for('screen.screen') }}">查看大屏</a>
+<a class="btn btn-outline-primary rounded-pill px-4" href="#admin-workbench">进入处理台</a>
+<a class="btn btn-primary rounded-pill px-4" href="{{ url_for('screen.screen') }}">查看大屏</a>
 {% endblock %}
 
 {% block admin_overview %}
-<section class="row g-3">
-  <div class="col-6 col-xl-3">
-    <div class="metric-card h-100">
-      <span>学生总数</span>
-      <strong>{{ summary.kpis.students }}</strong>
-    </div>
-  </div>
-  <div class="col-6 col-xl-3">
-    <div class="metric-card h-100">
-      <span>测评总数</span>
-      <strong>{{ summary.kpis.assessments }}</strong>
-    </div>
-  </div>
-  <div class="col-6 col-xl-3">
-    <div class="metric-card h-100">
-      <span>树洞条数</span>
-      <strong>{{ summary.kpis.posts }}</strong>
-    </div>
-  </div>
-  <div class="col-6 col-xl-3">
-    <div class="metric-card h-100">
-      <span>预约总数</span>
-      <strong>{{ summary.kpis.appointments }}</strong>
-    </div>
+{% set workbench = summary.workbench %}
+{% set focus = summary.screen_focus %}
+<section class="admin-dashboard" data-page="admin-dashboard">
+  <div class="admin-kpi-grid">
+    <article class="metric-card admin-kpi-card">
+      <span>待确认预约</span>
+      <strong>{{ workbench.pending_appointments }}</strong>
+      <small>优先处理最近提交的咨询申请</small>
+    </article>
+    <article class="metric-card admin-kpi-card">
+      <span>近 24 小时新增测评</span>
+      <strong>{{ workbench.recent_assessments | length }}</strong>
+      <small>快速筛出需要人工跟进的结果</small>
+    </article>
+    <article class="metric-card admin-kpi-card">
+      <span>需关注树洞</span>
+      <strong>{{ workbench.attention_posts }}</strong>
+      <small>结合情绪标签确认是否升级处理</small>
+    </article>
+    <article class="metric-card admin-kpi-card">
+      <span>当前需关注总量</span>
+      <strong>{{ focus.attention_total }}</strong>
+      <small>来自测评与行为情绪的综合关注量</small>
+    </article>
   </div>
 </section>
 {% endblock %}
 
 {% block admin_content %}
-<div class="d-flex flex-column gap-4">
-  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+{% set workbench = summary.workbench %}
+{% set focus = summary.screen_focus %}
+{% set pending_queue = workbench.recent_appointments | selectattr("status", "equalto", "待确认") | list %}
+<div class="admin-workbench-shell" data-page="admin-dashboard">
+  <section class="admin-section-header">
     <div>
-      <h2 class="h4 mb-1">后台总览</h2>
-      <p class="text-secondary mb-0">以下数据直接基于当前汇总结果展示，不额外依赖新字段。</p>
+      <h2 class="h4 mb-1">处理工作台</h2>
+      <p class="text-secondary mb-0">先看待办，再看趋势。所有模块均直接消费当前汇总结果。</p>
     </div>
-    <span class="badge rounded-pill text-bg-light border">交付视图</span>
-  </div>
+    <div class="admin-quick-actions">
+      <a class="btn btn-outline-primary rounded-pill px-3" href="{{ url_for('admin.appointments') }}">处理预约</a>
+      <a class="btn btn-outline-primary rounded-pill px-3" href="{{ url_for('admin.vents') }}">查看树洞</a>
+      <a class="btn btn-outline-primary rounded-pill px-3" href="{{ url_for('admin.assessments') }}">复核测评</a>
+    </div>
+  </section>
 
-  <div class="row g-4">
-    <div class="col-lg-6">
-      <div class="border rounded-4 h-100 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="h5 mb-0">情绪分布</h3>
-          <span class="text-secondary small">树洞情绪标签汇总</span>
+  <section id="admin-workbench" class="admin-workbench-grid">
+    <article class="admin-module-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">待处理预约</h3>
+          <p class="text-secondary mb-0">按提交时间倒序，仅展示待确认请求。</p>
         </div>
-        {% if summary.emotion_counts %}
-        <div class="vstack gap-3">
-          {% for emotion, count in summary.emotion_counts.items() %}
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong>{{ emotion }}</strong>
-              <div class="text-secondary small">当前统计数量</div>
-            </div>
-            <span class="badge rounded-pill text-bg-primary">{{ count }}</span>
+        <span class="admin-module-count">{{ workbench.pending_appointments }}</span>
+      </div>
+      {% if pending_queue %}
+      <div class="admin-queue-list">
+        {% for item in pending_queue %}
+        <article class="admin-queue-item">
+          <div>
+            <strong>{{ item.student_name }}</strong>
+            <div class="text-secondary small">{{ item.counselor_name }} · {{ item.schedule_date }} {{ item.slot }}</div>
           </div>
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="admin-empty">暂无情绪统计数据</div>
-        {% endif %}
+          <span class="admin-queue-tag is-warning">{{ item.status }}</span>
+        </article>
+        {% endfor %}
       </div>
-    </div>
+      {% else %}
+      <div class="admin-empty">暂无预约待处理</div>
+      {% endif %}
+    </article>
 
-    <div class="col-lg-6">
-      <div class="border rounded-4 h-100 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="h5 mb-0">量表使用情况</h3>
-          <span class="text-secondary small">测评表单调用频次</span>
+    <article class="admin-module-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">需关注树洞</h3>
+          <p class="text-secondary mb-0">查看高关注内容并决定是否线下介入。</p>
         </div>
-        {% if summary.scale_stats %}
-        <div class="vstack gap-3">
-          {% for name, count in summary.scale_stats.items() %}
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong>{{ name }}</strong>
-              <div class="text-secondary small">累计测评次数</div>
-            </div>
-            <span class="badge rounded-pill text-bg-success">{{ count }}</span>
+        <span class="admin-module-count">{{ workbench.attention_posts }}</span>
+      </div>
+      {% if workbench.recent_attention_posts %}
+      <div class="admin-queue-list">
+        {% for item in workbench.recent_attention_posts %}
+        <article class="admin-queue-item">
+          <div>
+            <strong>{{ item.title }}</strong>
+            <div class="text-secondary small">{{ '匿名' if item.is_anonymous else '实名' }} · {{ item.created_at or '刚刚' }}</div>
           </div>
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="admin-empty">暂无量表使用统计</div>
-        {% endif %}
+          <span class="admin-queue-tag is-danger">{{ item.emotion }}</span>
+        </article>
+        {% endfor %}
       </div>
-    </div>
-  </div>
+      {% else %}
+      <div class="admin-empty">暂无需关注树洞</div>
+      {% endif %}
+    </article>
 
-  <div class="border rounded-4 p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h3 class="h5 mb-0">预约热度</h3>
-      <span class="text-secondary small">按日期展示已汇总的预约量</span>
-    </div>
-    {% if summary.schedule_hotspots %}
-    <div class="row g-3">
-      {% for item in summary.schedule_hotspots %}
-      <div class="col-md-4">
-        <div class="bg-light border rounded-4 p-3 h-100">
-          <div class="text-secondary small mb-1">日期</div>
-          <strong class="d-block mb-2">{{ item.date }}</strong>
-          <div class="text-secondary small">预约数量</div>
-          <div class="fs-4 fw-semibold">{{ item.count }}</div>
+    <article class="admin-module-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">近期异常情绪记录</h3>
+          <p class="text-secondary mb-0">最近测评结果，适合结合咨询记录进行复核。</p>
+        </div>
+        <span class="admin-module-count">{{ workbench.recent_assessments | length }}</span>
+      </div>
+      {% if workbench.recent_assessments %}
+      <div class="admin-queue-list">
+        {% for item in workbench.recent_assessments %}
+        <article class="admin-queue-item">
+          <div>
+            <strong>{{ item.student_name }}</strong>
+            <div class="text-secondary small">{{ item.scale_name }} · {{ item.result_level }} · {{ item.created_at or '刚刚' }}</div>
+          </div>
+          <span class="admin-queue-tag is-primary">{{ item.score }}</span>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="admin-empty">暂无异常情绪记录</div>
+      {% endif %}
+    </article>
+  </section>
+
+  <section class="admin-analysis-grid">
+    <article class="admin-module-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">情绪分布</h3>
+          <p class="text-secondary mb-0">展示当前聚合情绪计数，用于值班态势判断。</p>
         </div>
       </div>
-      {% endfor %}
-    </div>
-    {% else %}
-    <div class="admin-empty">暂无预约热度数据</div>
-    {% endif %}
-  </div>
+      <div
+        id="emotion-distribution-chart"
+        class="dashboard-chart"
+        data-dashboard-series='{{ summary.emotion_counts | tojson }}'
+      ></div>
+    </article>
+
+    <article class="admin-module-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">量表使用情况</h3>
+          <p class="text-secondary mb-0">观察近期测评入口的使用重心。</p>
+        </div>
+      </div>
+      <div
+        id="scale-usage-chart"
+        class="dashboard-chart"
+        data-dashboard-series='{{ summary.scale_stats | tojson }}'
+      ></div>
+    </article>
+
+    <article class="admin-module-card admin-focus-card">
+      <div class="admin-module-head">
+        <div>
+          <h3 class="h5 mb-1">处理节奏</h3>
+          <p class="text-secondary mb-0">给值班人员一个简单的当前汇总工作量参考。</p>
+        </div>
+      </div>
+      <div class="admin-focus-list">
+        <div class="admin-focus-item">
+          <span>测评累计总量</span>
+          <strong>{{ focus.weekly_assessments }}</strong>
+        </div>
+        <div class="admin-focus-item">
+          <span>预约累计总量</span>
+          <strong>{{ focus.weekly_appointments }}</strong>
+        </div>
+        <div class="admin-focus-item">
+          <span>树洞累计活跃</span>
+          <strong>{{ focus.vent_activity }}</strong>
+        </div>
+      </div>
+    </article>
+  </section>
 </div>
+{% endblock %}
+
+{% block admin_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}

@@ -5,320 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>学院心理态势脱敏数据看板</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-    <style>
-      :root {
-        color-scheme: dark;
-      }
-
-      body.screen-body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-          radial-gradient(circle at top left, rgba(0, 163, 255, 0.18), transparent 35%),
-          radial-gradient(circle at top right, rgba(38, 208, 124, 0.16), transparent 30%),
-          linear-gradient(180deg, #06131f, #0a2033 55%, #081521);
-        color: #e9f5ff;
-        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      }
-
-      .screen-shell {
-        width: min(1440px, calc(100vw - 32px));
-        margin: 0 auto;
-        padding: 24px 0 32px;
-      }
-
-      .screen-topbar,
-      .screen-panel,
-      .screen-stat,
-      .screen-hero {
-        border: 1px solid rgba(168, 219, 255, 0.14);
-        background: rgba(7, 24, 39, 0.74);
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
-        backdrop-filter: blur(10px);
-      }
-
-      .screen-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        border-radius: 24px;
-        padding: 18px 24px;
-        margin-bottom: 20px;
-      }
-
-      .screen-kicker,
-      .screen-eyebrow {
-        margin: 0 0 8px;
-        color: #7ed7ff;
-        font-size: 0.875rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      .screen-topbar h1,
-      .screen-hero h2,
-      .screen-panel h2 {
-        margin: 0;
-      }
-
-      .screen-caption {
-        color: rgba(233, 245, 255, 0.72);
-      }
-
-      .screen-grid {
-        display: grid;
-        gap: 20px;
-      }
-
-      .screen-grid-main {
-        grid-template-columns: 1.5fr 1fr;
-        margin-bottom: 20px;
-      }
-
-      .screen-grid-stats {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        margin-bottom: 20px;
-      }
-
-      .screen-grid-panels {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .screen-hero {
-        border-radius: 28px;
-        padding: 28px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .screen-hero::after {
-        content: "";
-        position: absolute;
-        inset: auto -80px -80px auto;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(126, 215, 255, 0.18), transparent 70%);
-      }
-
-      .screen-hero-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 24px;
-      }
-
-      .screen-hero-item {
-        border: 1px solid rgba(168, 219, 255, 0.12);
-        border-radius: 18px;
-        padding: 16px;
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .screen-hero-item strong {
-        display: block;
-        font-size: 2rem;
-        line-height: 1.1;
-        margin-top: 8px;
-      }
-
-      .screen-stat {
-        border-radius: 24px;
-        padding: 22px;
-      }
-
-      .screen-stat span,
-      .screen-panel li span,
-      .screen-hero-item span,
-      .screen-meta {
-        color: rgba(233, 245, 255, 0.72);
-      }
-
-      .screen-stat strong {
-        display: block;
-        margin-top: 12px;
-        font-size: 2.4rem;
-        line-height: 1;
-      }
-
-      .screen-panel {
-        border-radius: 24px;
-        padding: 22px;
-      }
-
-      .screen-panel ul {
-        list-style: none;
-        padding: 0;
-        margin: 18px 0 0;
-        display: grid;
-        gap: 14px;
-      }
-
-      .screen-panel li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        border: 1px solid rgba(168, 219, 255, 0.1);
-        border-radius: 18px;
-        padding: 14px 16px;
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .screen-panel li strong {
-        font-size: 1.5rem;
-      }
-
-      .screen-panel li.empty {
-        justify-content: center;
-        color: rgba(233, 245, 255, 0.6);
-      }
-
-      @media (max-width: 1199.98px) {
-        .screen-grid-main,
-        .screen-grid-panels {
-          grid-template-columns: 1fr;
-        }
-
-        .screen-grid-stats {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      @media (max-width: 767.98px) {
-        .screen-shell {
-          width: min(100vw - 20px, 100%);
-          padding-top: 12px;
-        }
-
-        .screen-topbar {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .screen-grid-stats,
-        .screen-hero-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .screen-stat strong {
-          font-size: 2rem;
-        }
-      }
-    </style>
   </head>
-  <body class="screen-body">
-    <main class="screen-shell">
-      <header class="screen-topbar">
-        <div>
-          <p class="screen-kicker">Large Screen Dashboard</p>
+  <body class="screen-body" data-page="screen-dashboard">
+    <main class="screen-board">
+      <header class="screen-header">
+        <div class="screen-header-copy">
+          <p class="screen-kicker">Situation Board</p>
           <h1>学院心理态势脱敏数据看板</h1>
+          <p class="screen-subtitle">围绕当前关注规模、本周变化和预约热度，帮助值班与巡检快速识别态势。</p>
         </div>
-        <div class="screen-caption">仅展示脱敏聚合数据，适用于汇报、巡检与值班观察</div>
+        <div class="screen-meta-panel">
+          <span class="screen-meta-label">页面刷新时间</span>
+          <time id="screen-timestamp" class="screen-meta-value">页面刷新时间加载中</time>
+          <p class="screen-meta-note">仅展示脱敏后的汇总数据</p>
+        </div>
       </header>
 
-      <section class="screen-grid screen-grid-main">
-        <article class="screen-hero">
-          <p class="screen-eyebrow">Campus Overview</p>
-          <h2>面向学院心理中心的实时脱敏观测看板</h2>
-          <p class="screen-caption mt-3 mb-0">当前页面基于既有汇总对象 `summary` 组织展示，不额外依赖新的统计字段。</p>
-          <div class="screen-hero-grid">
-            <div class="screen-hero-item">
-              <span>学生覆盖规模</span>
-              <strong>{{ summary.kpis.students }}</strong>
-            </div>
-            <div class="screen-hero-item">
-              <span>测评累计总数</span>
-              <strong>{{ summary.kpis.assessments }}</strong>
-            </div>
-            <div class="screen-hero-item">
-              <span>树洞发帖总数</span>
-              <strong>{{ summary.kpis.posts }}</strong>
-            </div>
-            <div class="screen-hero-item">
-              <span>预约累计总数</span>
-              <strong>{{ summary.kpis.appointments }}</strong>
+      {% set focus = summary.screen_focus %}
+      <section id="screen-kpis" class="screen-kpi-grid" aria-label="核心指标">
+        <article class="screen-kpi-card">
+          <span>当前需关注人数</span>
+          <strong>{{ focus.attention_total }}</strong>
+          <small>来自测评与行为情绪的聚合计数</small>
+        </article>
+        <article class="screen-kpi-card">
+          <span>本周测评人数</span>
+          <strong>{{ focus.weekly_assessments }}</strong>
+          <small>按现有脱敏汇总口径展示</small>
+        </article>
+        <article class="screen-kpi-card">
+          <span>本周预约人数</span>
+          <strong>{{ focus.weekly_appointments }}</strong>
+          <small>用于判断咨询接待压力</small>
+        </article>
+        <article class="screen-kpi-card">
+          <span>匿名表达活跃度</span>
+          <strong>{{ focus.vent_activity }}</strong>
+          <small>树洞与表达入口的累计活跃量</small>
+        </article>
+      </section>
+
+      <section class="screen-stage-grid">
+        <article id="screen-focus-panel" class="screen-focus-panel">
+          <div class="screen-panel-header">
+            <div>
+              <p class="screen-panel-kicker">Focus</p>
+              <h2>值班关注焦点</h2>
             </div>
           </div>
+          <div class="screen-focus-list">
+            <div class="screen-focus-item">
+              <span>当前需关注人数</span>
+              <strong>{{ focus.attention_total }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>本周测评人数</span>
+              <strong>{{ focus.weekly_assessments }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>本周预约人数</span>
+              <strong>{{ focus.weekly_appointments }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>匿名表达活跃度</span>
+              <strong>{{ focus.vent_activity }}</strong>
+            </div>
+          </div>
+          <p class="screen-note">仅展示脱敏后的汇总数据，用于汇报、巡检和值班观察。</p>
         </article>
 
-        <article class="screen-panel">
-          <p class="screen-eyebrow">Screen Notes</p>
-          <h2>值班提示</h2>
-          <ul>
-            <li>
-              <span>汇总口径</span>
-              <strong>统一</strong>
-            </li>
-            <li>
-              <span>展示方式</span>
-              <strong>脱敏</strong>
-            </li>
-            <li>
-              <span>适用场景</span>
-              <strong>巡检 / 汇报</strong>
-            </li>
-          </ul>
-        </article>
-      </section>
+        <div class="screen-chart-grid">
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Emotion</p>
+                <h2>情绪分布</h2>
+              </div>
+            </div>
+            <div
+              id="screen-emotion-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.emotion_counts | tojson }}'
+            ></div>
+          </article>
 
-      <section class="screen-grid screen-grid-stats">
-        <article class="screen-stat">
-          <span>学生总数</span>
-          <strong>{{ summary.kpis.students }}</strong>
-        </article>
-        <article class="screen-stat">
-          <span>测评总数</span>
-          <strong>{{ summary.kpis.assessments }}</strong>
-        </article>
-        <article class="screen-stat">
-          <span>树洞条数</span>
-          <strong>{{ summary.kpis.posts }}</strong>
-        </article>
-        <article class="screen-stat">
-          <span>预约总数</span>
-          <strong>{{ summary.kpis.appointments }}</strong>
-        </article>
-      </section>
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Appointments</p>
+                <h2>预约热度</h2>
+              </div>
+            </div>
+            <div
+              id="screen-appointment-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.schedule_hotspots | tojson }}'
+            ></div>
+          </article>
 
-      <section class="screen-grid screen-grid-panels">
-        <article class="screen-panel">
-          <p class="screen-eyebrow">Emotion</p>
-          <h2>情绪分布</h2>
-          <ul>
-            {% for emotion, count in summary.emotion_counts.items() %}
-            <li><span>{{ emotion }}</span><strong>{{ count }}</strong></li>
-            {% else %}
-            <li class="empty">暂无情绪统计</li>
-            {% endfor %}
-          </ul>
-        </article>
-
-        <article class="screen-panel">
-          <p class="screen-eyebrow">Scale Usage</p>
-          <h2>量表使用情况</h2>
-          <ul>
-            {% for scale, count in summary.scale_stats.items() %}
-            <li><span>{{ scale }}</span><strong>{{ count }}</strong></li>
-            {% else %}
-            <li class="empty">暂无量表统计</li>
-            {% endfor %}
-          </ul>
-        </article>
-
-        <article class="screen-panel">
-          <p class="screen-eyebrow">Appointments</p>
-          <h2>预约热度</h2>
-          <ul>
-            {% for item in summary.schedule_hotspots %}
-            <li><span>{{ item.date }}</span><strong>{{ item.count }}</strong></li>
-            {% else %}
-            <li class="empty">暂无预约统计</li>
-            {% endfor %}
-          </ul>
-        </article>
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Scale Usage</p>
+                <h2>量表使用情况</h2>
+              </div>
+            </div>
+            <div
+              id="screen-scale-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.scale_stats | tojson }}'
+            ></div>
+          </article>
+        </div>
       </section>
     </main>
+
+    <script src="{{ url_for('static', filename='js/screen.js') }}"></script>
   </body>
 </html>
