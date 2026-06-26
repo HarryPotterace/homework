@@ -1,23 +1,59 @@
 {% extends "admin/base.html" %}
 
 {% block title %}树洞记录{% endblock %}
+{% block admin_nav_key %}vents{% endblock %}
+{% block admin_page_title %}树洞记录{% endblock %}
+{% block admin_page_intro %}用于回看匿名发帖内容、情绪标签和风险等级，支持人工关注重点信息。{% endblock %}
+
+{% block admin_overview %}
+<section class="row g-3">
+  <div class="col-lg-8">
+    <div class="admin-section-card h-100">
+      <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center">
+        <div>
+          <h2 class="h5 mb-1">记录概览</h2>
+          <p class="text-secondary mb-0">以下内容按原有 `posts` 列表逐条展示，不引入额外筛选或标签字段。</p>
+        </div>
+        <span class="badge rounded-pill text-bg-primary">共 {{ posts|length }} 条</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="admin-section-card h-100">
+      <h2 class="h5 mb-1">阅览提示</h2>
+      <p class="text-secondary mb-0">保留匿名内容原貌，版式仅强化信息分区和风险标签可读性。</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
 {% block admin_content %}
-<div class="panel-card">
-  <h2 class="h4 mb-3">匿名树洞与情绪标签</h2>
+<div class="d-flex flex-column gap-3">
+  <div>
+    <h2 class="h4 mb-1">匿名树洞时间线</h2>
+    <p class="text-secondary mb-0">按时间展示标题、内容、情绪与风险等级，适合作为咨询前的信息浏览入口。</p>
+  </div>
+  {% if posts %}
   <div class="vstack gap-3">
     {% for post in posts %}
-    <article class="timeline-item">
-      <div class="d-flex justify-content-between align-items-center gap-3">
-        <strong>{{ post.title }}</strong>
-        <span class="soft-badge">{{ post.emotion }} / {{ post.risk_level }}</span>
+    <article class="border rounded-4 p-4 bg-white">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+        <div>
+          <h3 class="h5 mb-2">{{ post.title }}</h3>
+          <p class="text-secondary small mb-0">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge rounded-pill text-bg-light border">情绪：{{ post.emotion }}</span>
+          <span class="badge rounded-pill text-bg-warning">{{ post.risk_level }}</span>
+        </div>
       </div>
-      <p class="text-secondary small my-2">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
-      <p class="mb-0">{{ post.content }}</p>
+      <hr class="my-3">
+      <p class="mb-0" style="white-space: pre-wrap;">{{ post.content }}</p>
     </article>
-    {% else %}
-    <p class="text-secondary mb-0">暂无树洞记录。</p>
     {% endfor %}
   </div>
+  {% else %}
+  <div class="admin-empty">暂无树洞记录</div>
+  {% endif %}
 </div>
 {% endblock %}

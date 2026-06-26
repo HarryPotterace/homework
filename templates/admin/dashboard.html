@@ -1,54 +1,123 @@
 {% extends "admin/base.html" %}
 
 {% block title %}后台总览{% endblock %}
+{% block admin_nav_key %}dashboard{% endblock %}
+{% block admin_page_title %}后台总览{% endblock %}
+{% block admin_page_intro %}集中查看学生测评、匿名树洞和预约咨询的核心统计，适合作为值班与周报入口。{% endblock %}
+{% block admin_page_actions %}
+<a class="btn btn-outline-primary rounded-pill px-4" href="{{ url_for('screen.screen') }}">查看大屏</a>
+{% endblock %}
 
-{% block admin_content %}
-<div class="row g-4">
-  <div class="col-md-3">
-    <div class="metric-card">
+{% block admin_overview %}
+<section class="row g-3">
+  <div class="col-6 col-xl-3">
+    <div class="metric-card h-100">
       <span>学生总数</span>
       <strong>{{ summary.kpis.students }}</strong>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="metric-card">
+  <div class="col-6 col-xl-3">
+    <div class="metric-card h-100">
       <span>测评总数</span>
       <strong>{{ summary.kpis.assessments }}</strong>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="metric-card">
+  <div class="col-6 col-xl-3">
+    <div class="metric-card h-100">
       <span>树洞条数</span>
       <strong>{{ summary.kpis.posts }}</strong>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="metric-card">
+  <div class="col-6 col-xl-3">
+    <div class="metric-card h-100">
       <span>预约总数</span>
       <strong>{{ summary.kpis.appointments }}</strong>
     </div>
   </div>
-</div>
-<div class="row g-4 mt-1">
-  <div class="col-lg-6">
-    <div class="panel-card h-100">
-      <h2 class="h4 mb-3">情绪分布</h2>
-      <ul class="list-unstyled mb-0 text-secondary lh-lg">
-        {% for emotion, count in summary.emotion_counts.items() %}
-        <li>{{ emotion }}：{{ count }}</li>
-        {% endfor %}
-      </ul>
+</section>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex flex-column gap-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+      <h2 class="h4 mb-1">运营分布</h2>
+      <p class="text-secondary mb-0">以下数据直接基于当前汇总结果展示，不额外依赖新字段。</p>
+    </div>
+    <span class="badge rounded-pill text-bg-light border">交付视图</span>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="border rounded-4 h-100 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="h5 mb-0">情绪分布</h3>
+          <span class="text-secondary small">树洞情绪标签汇总</span>
+        </div>
+        {% if summary.emotion_counts %}
+        <div class="vstack gap-3">
+          {% for emotion, count in summary.emotion_counts.items() %}
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ emotion }}</strong>
+              <div class="text-secondary small">当前统计数量</div>
+            </div>
+            <span class="badge rounded-pill text-bg-primary">{{ count }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="admin-empty">暂无情绪统计数据</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="border rounded-4 h-100 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="h5 mb-0">量表使用情况</h3>
+          <span class="text-secondary small">测评表单调用频次</span>
+        </div>
+        {% if summary.scale_stats %}
+        <div class="vstack gap-3">
+          {% for name, count in summary.scale_stats.items() %}
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ name }}</strong>
+              <div class="text-secondary small">累计测评次数</div>
+            </div>
+            <span class="badge rounded-pill text-bg-success">{{ count }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="admin-empty">暂无量表使用统计</div>
+        {% endif %}
+      </div>
     </div>
   </div>
-  <div class="col-lg-6">
-    <div class="panel-card h-100">
-      <h2 class="h4 mb-3">量表使用情况</h2>
-      <ul class="list-unstyled mb-0 text-secondary lh-lg">
-        {% for name, count in summary.scale_stats.items() %}
-        <li>{{ name }}：{{ count }}</li>
-        {% endfor %}
-      </ul>
+
+  <div class="border rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="h5 mb-0">预约热度</h3>
+      <span class="text-secondary small">按日期展示已汇总的预约量</span>
     </div>
+    {% if summary.schedule_hotspots %}
+    <div class="row g-3">
+      {% for item in summary.schedule_hotspots %}
+      <div class="col-md-4">
+        <div class="bg-light border rounded-4 p-3 h-100">
+          <div class="text-secondary small mb-1">日期</div>
+          <strong class="d-block mb-2">{{ item.date }}</strong>
+          <div class="text-secondary small">预约数量</div>
+          <div class="fs-4 fw-semibold">{{ item.count }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="admin-empty">暂无预约热度数据</div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

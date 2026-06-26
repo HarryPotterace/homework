@@ -1,34 +1,66 @@
 {% extends "admin/base.html" %}
 
 {% block title %}测评记录{% endblock %}
+{% block admin_nav_key %}assessments{% endblock %}
+{% block admin_page_title %}测评记录{% endblock %}
+{% block admin_page_intro %}统一查看学生量表填写结果，便于咨询师回溯分值、结果等级与时间。{% endblock %}
+
+{% block admin_overview %}
+<section class="row g-3">
+  <div class="col-lg-8">
+    <div class="admin-section-card h-100">
+      <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center">
+        <div>
+          <h2 class="h5 mb-1">记录概览</h2>
+          <p class="text-secondary mb-0">当前页面直接展示后端已返回的 `records` 列表，不附加筛选依赖。</p>
+        </div>
+        <span class="badge rounded-pill text-bg-primary">共 {{ records|length }} 条</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="admin-section-card h-100">
+      <h2 class="h5 mb-1">使用建议</h2>
+      <p class="text-secondary mb-0">适合用于核查近期测评结果、人工复盘异常分值，以及支持导出前的人工浏览。</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
 {% block admin_content %}
-<div class="panel-card">
-  <h2 class="h4 mb-3">学生测评记录</h2>
+<div class="d-flex flex-column gap-3">
+  <div>
+    <h2 class="h4 mb-1">学生测评台账</h2>
+    <p class="text-secondary mb-0">保留原有字段顺序，并补齐更稳定的表格说明与空态呈现。</p>
+  </div>
   <div class="table-responsive">
-    <table class="table align-middle">
-      <thead>
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
         <tr>
           <th>学号</th>
           <th>昵称</th>
           <th>量表</th>
           <th>得分</th>
           <th>结果</th>
-          <th>时间</th>
+          <th>提交时间</th>
         </tr>
       </thead>
       <tbody>
         {% for item in records %}
         <tr>
-          <td>{{ item.user.student_no }}</td>
+          <td class="fw-semibold">{{ item.user.student_no }}</td>
           <td>{{ item.user.nickname }}</td>
           <td>{{ item.scale_name }}</td>
           <td>{{ item.score }}</td>
-          <td>{{ item.result_level }}</td>
+          <td><span class="badge rounded-pill text-bg-light border">{{ item.result_level }}</span></td>
           <td>{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
         </tr>
         {% else %}
-        <tr><td colspan="6" class="text-center text-secondary">暂无测评记录</td></tr>
+        <tr>
+          <td colspan="6" class="p-4">
+            <div class="admin-empty">暂无测评记录</div>
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>

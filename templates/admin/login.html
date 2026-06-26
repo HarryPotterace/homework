@@ -5,21 +5,42 @@
 {% block content %}
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-5">
-      <div class="panel-card">
-        <h1 class="h3 mb-4">咨询师 / 管理员登录</h1>
-        <form method="post" class="vstack gap-3">
-          <div>
-            <label class="form-label">账号</label>
-            <input class="form-control" name="username" required>
+    <div class="col-lg-10">
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-6">
+          <div class="panel-card h-100 p-4 p-lg-5">
+            <span class="badge rounded-pill text-bg-primary mb-3">Admin Access</span>
+            <h1 class="display-6 fw-semibold mb-3">咨询师 / 管理员后台登录</h1>
+            <p class="text-secondary mb-4">进入后台后可查看测评记录、匿名树洞和预约处理页面。本次整理仅优化模板结构，不变更任何登录接口。</p>
+            <div class="vstack gap-3">
+              <div class="border rounded-4 p-3 bg-light">
+                <div class="fw-semibold mb-1">适用角色</div>
+                <div class="text-secondary small">咨询师、管理员</div>
+              </div>
+              <div class="border rounded-4 p-3 bg-light">
+                <div class="fw-semibold mb-1">默认示例账号</div>
+                <div class="text-secondary small">consultant / Admin12345</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="form-label">密码</label>
-            <input class="form-control" type="password" name="password" required>
+        </div>
+        <div class="col-lg-6">
+          <div class="panel-card h-100 p-4 p-lg-5">
+            <h2 class="h4 mb-4">身份验证</h2>
+            <form method="post" class="vstack gap-3">
+              <div>
+                <label class="form-label">账号</label>
+                <input class="form-control form-control-lg" name="username" required>
+              </div>
+              <div>
+                <label class="form-label">密码</label>
+                <input class="form-control form-control-lg" type="password" name="password" required>
+              </div>
+              <button class="btn btn-primary btn-lg rounded-pill mt-2">进入后台</button>
+            </form>
+            <p class="small text-secondary mt-3 mb-0">提交字段保持 `username` 和 `password` 不变。</p>
           </div>
-          <button class="btn btn-primary rounded-pill">进入后台</button>
-        </form>
-        <p class="small text-secondary mt-3 mb-0">默认示例账号：consultant / Admin12345</p>
+        </div>
       </div>
     </div>
   </div>
