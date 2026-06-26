@@ -110,6 +110,13 @@
 - 文本情绪分析或情绪计算相关文献
 - 高校心理健康服务场景相关资料
 
+可直接作为初稿检索方向：
+- Norman, D. A.《设计心理学》或相关可用性设计文献。
+- Kroenke, K. 等关于 `PHQ-9` 的原始论文。
+- Spitzer, R. L. 等关于 `GAD-7` 的原始论文。
+- Picard, R. W. 关于 Affective Computing 的基础文献。
+- 国内高校心理健康教育与危机干预相关研究综述。
+
 ## 3. 必补内容
 - 研究背景与意义。
 - 研究现状。
@@ -130,3 +137,7 @@
 - 报告正文以课程要求和当前实现为准，不引用仓库内过程性措辞。
 - 图、表必须编号，图题在下、表题在上。
 - 所有截图、ER 图、流程图、类谱系树文件统一由 `docs/assets/README.md` 管理。
+- 当前已可直接引用的结构图源文件：
+  - `docs/assets/system-flow.md`
+  - `docs/assets/er-diagram.md`
+  - `docs/assets/class-tree.md`

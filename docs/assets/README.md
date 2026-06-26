@@ -37,5 +37,18 @@
 - `fig-12-class-tree.png`
 - `tab-01-functional-tests.xlsx` 或等效图片
 
-## 4. 当前状态
-- 命名规范和用途已确定，待编码和测试完成后逐项补图。
+## 4. 当前素材源文件
+- `docs/assets/system-flow.md`
+  - 系统流程图 Mermaid 源文件。
+- `docs/assets/er-diagram.md`
+  - 数据库 ER 图 Mermaid 源文件。
+- `docs/assets/class-tree.md`
+  - 类谱系树 Mermaid 源文件。
+- `docs/assets/capture-checklist.md`
+  - 页面截图、测试附件和导出顺序清单。
+
+## 5. 当前状态
+- 命名规范和用途已确定。
+- 三张结构图的源码已经生成，待导出成图片。
+- 页面截图和终端截图仍需在最终演示环境中人工采集。
+- 测试表格已经在 `docs/test-report.md` 形成底稿，可直接转成报告表格。

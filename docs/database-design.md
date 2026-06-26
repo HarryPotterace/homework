@@ -156,7 +156,8 @@
 ## 7. ER 图说明
 - 正式课程报告需插入本系统 ER 图。
 - 图中至少包含：`users`、`assessment_records`、`vent_posts`、`behavior_logs`、`counselors_schedule`、`appointments`、`scales`、`scale_questions`。
-- ER 图素材文件建议放入 `docs/assets/fig-11-er-diagram.png`。
+- 当前 ER 图源文件已建立：`docs/assets/er-diagram.md`。
+- 导出图片后建议命名为 `docs/assets/fig-11-er-diagram.png`。
 
 ## 8. 与 SQL 文件的对应关系
 - 建表主来源：`sql/schema.sql`
