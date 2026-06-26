@@ -8,15 +8,15 @@
 
 | 编号 | 建议文件名 | 页面/证据 | 访问路径 | 登录要求 | 报告章节 | 当前状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `fig-01-student-home.png` | 学生端首页 | `/` | 否 | 第四章 | 待人工截图 |
+| 1 | `fig-01-student-home.png` | 学生端首页（支持入口 + 支持类型卡） | `/` | 否 | 第四章 | 待人工截图 |
 | 2 | `fig-02-assessment-form.png` | 测评答题页 | `/assessment?scale=PHQ-9` | 学生登录 | 第四章 | 待人工截图 |
 | 3 | `fig-03-assessment-result.png` | 测评结果页 | `/assessment` 提交后 | 学生登录 | 第四章 | 待人工截图 |
 | 4 | `fig-04-vent-page.png` | 匿名树洞页 | `/vent` | 学生登录 | 第四章 | 待人工截图 |
 | 5 | `fig-05-emotion-page.png` | 情绪感知交互页 | `/emotion` | 学生登录 | 第四章 | 待人工截图 |
 | 6 | `fig-06-appointments-page.png` | 咨询预约页 | `/appointments` | 学生登录 | 第四章 | 待人工截图 |
-| 7 | `fig-07-admin-dashboard.png` | 后台总览页 | `/admin/dashboard` | 后台登录 | 第四章 | 待人工截图 |
+| 7 | `fig-07-admin-dashboard.png` | 后台总览页（待办工作台 + 图形化统计） | `/admin/dashboard` | 后台登录 | 第四章 | 待人工截图 |
 | 8 | `fig-08-admin-records.png` | 后台记录页 | `/admin/assessments` 或 `/admin/appointments` | 后台登录 | 第四章 | 待人工截图 |
-| 9 | `fig-09-screen-dashboard.png` | 大屏看板页 | `/screen` | 否 | 第四章 | 待人工截图 |
+| 9 | `fig-09-screen-dashboard.png` | 大屏看板页（KPI + 态势图表 + 脱敏说明） | `/screen` | 否 | 第四章 | 待人工截图 |
 
 ## 3. 图示源文件与导出目标
 

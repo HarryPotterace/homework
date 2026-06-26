@@ -60,8 +60,9 @@ python -m pytest -q
 ```
 
 结果为：
-- `19 passed`
-- 适用分支：`feat/report-docs`（已与 `feat/backend-core`、`feat/student-ui`、`feat/admin-screen` 对齐后验证）
+- `feat/student-ui` 分支：`26 passed`
+- `feat/admin-screen` 分支：`28 passed`
+- 说明：三端关键页面优化按工作树分支隔离开发，当前已分别完成各自分支内的全量自动化验证；最终统一分支合并后需再执行一次总体验证并补终端截图。
 
 ### 5.2 覆盖内容
 
@@ -74,11 +75,13 @@ python -m pytest -q
 | 学生注册与登录 | 通过 | `test_student_routes.py` |
 | 注册页校验脚本加载 | 通过 | `test_student_routes.py` |
 | 预约时段异步接口 | 通过 | `test_student_routes.py` |
+| 学生首页支持入口与个性化摘要 | 通过 | `test_student_routes.py` |
 | 测评记录保存 | 通过 | `test_student_routes.py` |
 | 树洞情绪标签生成 | 通过 | `test_student_routes.py` |
 | 预约创建与取消 | 通过 | `test_student_routes.py` |
 | 后台登录与总览访问 | 通过 | `test_admin_and_screen.py` |
-| 大屏页面渲染 | 通过 | `test_admin_and_screen.py` |
+| 后台工作台与图表钩子 | 通过 | `test_admin_and_screen.py` |
+| 大屏 KPI / 图表 / 脱敏说明 | 通过 | `test_admin_and_screen.py` |
 | SQL 表结构资源存在性 | 通过 | `test_sql_assets.py` |
 | SQL 初始化数据存在性 | 通过 | `test_sql_assets.py` |
 | 后端现代化保护项 | 通过 | `test_backend_modernization.py` |
@@ -92,11 +95,11 @@ python -m pytest -q
 | F-03 | 个人信息修改 | 昵称与联系方式可更新 | 待录入截图 |
 | F-04 | PHQ-9 / GAD-7 测评 | 计算得分、生成建议、记录入库 | 待录入截图 |
 | F-05 | 匿名树洞发布 | 不展示身份信息，生成情绪标签 | 待录入截图 |
-| F-06 | 情绪感知页 | 行为采集后显示情绪和界面模式 | 待录入截图 |
-| F-07 | 预约创建 | 预约成功并锁定时段 | 待录入截图 |
-| F-08 | 预约取消 | 状态变更为已取消，并释放时段 | 待录入截图 |
-| F-09 | 后台登录与查看记录 | 可查看测评、树洞、预约页面 | 待录入截图 |
-| F-10 | 大屏展示 | 显示聚合统计，不暴露身份字段 | 待录入截图 |
+| F-06 | 学生首页支持入口 | 可直接进入测评、树洞、预约，并可见隐私说明 | 待录入截图 |
+| F-07 | 情绪感知页 | 行为采集后显示情绪和界面模式 | 待录入截图 |
+| F-08 | 预约创建与取消 | 预约成功并锁定时段，取消后释放时段 | 待录入截图 |
+| F-09 | 后台总览工作台 | 可查看待处理预约、需关注树洞和图形化统计 | 待录入截图 |
+| F-10 | 大屏展示 | 显示态势 KPI、图表和脱敏说明，不暴露身份字段 | 待录入截图 |
 
 ## 7. 性能测试记录
 
