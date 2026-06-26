@@ -8,7 +8,7 @@
     <div class="col-lg-5">
       <div class="panel-card">
         <h1 class="h3 mb-4">学生登录</h1>
-        <form method="post" class="vstack gap-3">
+        <form method="post" class="vstack gap-3" data-validation-form="login">
           <div>
             <label class="form-label">学号</label>
             <input class="form-control" name="student_no" required>
@@ -24,4 +24,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
 {% endblock %}

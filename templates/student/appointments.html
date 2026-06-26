@@ -11,7 +11,10 @@
           <h1 class="h3 mb-0">心理咨询预约</h1>
           <span class="soft-badge">移动端友好布局</span>
         </div>
-        <div class="vstack gap-3">
+        <div class="small text-secondary mb-3" id="schedule-status" data-schedule-api="{{ url_for('api.schedules') }}">
+          页面加载后会异步校验当前预约时段状态。
+        </div>
+        <div class="vstack gap-3" id="schedule-list">
           {% for schedule in schedules %}
           <div class="schedule-card">
             <div>
@@ -58,4 +61,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/schedules.js') }}"></script>
 {% endblock %}

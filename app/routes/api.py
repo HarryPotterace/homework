@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, session
 
+from app.decorators import student_login_required
 from app.extensions import db
-from app.models import BehaviorLog
+from app.models import BehaviorLog, CounselorSchedule
 from app.services.dashboard import build_dashboard_summary
 from app.services.emotion import infer_behavior_emotion
 
@@ -30,3 +31,22 @@ def behavior():
 @api_bp.route("/screen-data")
 def screen_data():
     return jsonify(build_dashboard_summary())
+
+
+@api_bp.route("/schedules")
+@student_login_required
+def schedules():
+    items = CounselorSchedule.query.order_by(CounselorSchedule.schedule_date.asc()).all()
+    return jsonify(
+        [
+            {
+                "id": item.id,
+                "counselor_name": item.counselor_name,
+                "title": item.title,
+                "schedule_date": item.schedule_date,
+                "slot": item.slot,
+                "is_available": item.is_available,
+            }
+            for item in items
+        ]
+    )

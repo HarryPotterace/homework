@@ -8,7 +8,7 @@
     <div class="col-lg-7">
       <div class="panel-card">
         <h1 class="h3 mb-4">学生注册</h1>
-        <form method="post" class="row g-3">
+        <form method="post" class="row g-3" data-validation-form="register">
           <div class="col-md-6">
             <label class="form-label">学号</label>
             <input class="form-control" name="student_no" required>
@@ -27,7 +27,7 @@
           </div>
           <div class="col-12">
             <label class="form-label">密码</label>
-            <input class="form-control" type="password" name="password" minlength="8" required>
+            <input class="form-control" type="password" name="password" minlength="8" required data-password-field="true">
           </div>
           <div class="col-12">
             <button class="btn btn-primary rounded-pill">提交注册</button>
@@ -37,4 +37,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
 {% endblock %}
