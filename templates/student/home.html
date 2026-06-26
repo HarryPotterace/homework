@@ -14,6 +14,20 @@
           <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('student.assessment') }}">开始心理测评</a>
           <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{{ url_for('student.vent') }}">进入匿名树洞</a>
         </div>
+        <div class="journey-strip mt-4">
+          <div class="journey-step">
+            <strong>1</strong>
+            <span>先匿名表达当前感受</span>
+          </div>
+          <div class="journey-step">
+            <strong>2</strong>
+            <span>再做量表测评获取建议</span>
+          </div>
+          <div class="journey-step">
+            <strong>3</strong>
+            <span>需要时直接预约咨询</span>
+          </div>
+        </div>
       </div>
       <div class="col-lg-6">
         <div class="glass-board p-4">
@@ -66,6 +80,40 @@
       </div>
     </div>
     {% endfor %}
+  </div>
+</section>
+
+<section class="container py-2 pb-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="panel-card h-100">
+        <h2 class="h5 mb-3">低压力入口</h2>
+        <ul class="soft-list">
+          <li>匿名树洞默认不展示学生身份。</li>
+          <li>学生端文案保持温和，不强化标签。</li>
+          <li>移动端按钮和输入区域优先适配触控。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="panel-card h-100">
+        <h2 class="h5 mb-3">智能感知路径</h2>
+        <ul class="soft-list">
+          <li>行为信号与文本信号共同参与情绪判断。</li>
+          <li>根据状态切换界面模式和提示语。</li>
+          <li>高风险内容优先引导预约咨询。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="panel-card h-100">
+        <h2 class="h5 mb-3">后续支持</h2>
+        <div class="checkpoint">
+          <span class="soft-badge">推荐顺序</span>
+          <p class="mt-3 mb-0 text-secondary">树洞记录情绪，测评形成结果，预约连接人工支持，大屏和后台仅查看脱敏聚合数据。</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}

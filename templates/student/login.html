@@ -17,6 +17,13 @@
             <label class="form-label">密码</label>
             <input class="form-control" type="password" name="password" required>
           </div>
+          <div class="remember-row">
+            <label class="form-check-label d-flex align-items-center gap-2">
+              <input class="form-check-input mt-0" type="checkbox" name="remember">
+              <span>记住密码（演示项）</span>
+            </label>
+            <span class="text-secondary small">实际部署时可替换为更安全的记住登录状态方案。</span>
+          </div>
           <button class="btn btn-primary rounded-pill">登录</button>
         </form>
         <p class="mt-3 mb-0">还没有账号？<a href="{{ url_for('student.register') }}">立即注册</a></p>

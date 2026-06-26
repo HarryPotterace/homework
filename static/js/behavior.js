@@ -47,6 +47,22 @@ if (card) {
     }
   };
 
+  const setMeter = (emotion) => {
+    const meter = card.querySelector("[data-field='meter']");
+    if (!meter) {
+      return;
+    }
+
+    const widthByEmotion = {
+      "平静": "30%",
+      "低落": "60%",
+      "焦虑": "75%",
+      "需关注": "95%",
+    };
+
+    meter.style.width = widthByEmotion[emotion] || "30%";
+  };
+
   const updateHint = (emotion) => {
     if (emotion === "焦虑") {
       return "建议深呼吸并放慢操作节奏";
@@ -69,19 +85,25 @@ if (card) {
       pause_count: state.pauseCount,
     };
 
-    const response = await fetch("/api/behavior", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    const result = await response.json();
-    card.dataset.uiMode = result.ui_mode;
-    setField("emotion", result.emotion);
-    setField("mode", result.ui_mode);
-    setField("hint", updateHint(result.emotion));
-    state.clickCount = 0;
-    state.pauseCount = 0;
+    try {
+      const response = await fetch("/api/behavior", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      card.dataset.uiMode = result.ui_mode;
+      setField("emotion", result.emotion);
+      setField("mode", result.ui_mode);
+      setField("hint", updateHint(result.emotion));
+      setMeter(result.emotion);
+    } catch (error) {
+      setField("hint", "网络波动，暂时保持当前模式");
+    } finally {
+      state.clickCount = 0;
+      state.pauseCount = 0;
+    }
   }, 5000);
 }

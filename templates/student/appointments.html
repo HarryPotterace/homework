@@ -11,7 +11,7 @@
           <h1 class="h3 mb-0">心理咨询预约</h1>
           <span class="soft-badge">移动端友好布局</span>
         </div>
-        <div class="small text-secondary mb-3" id="schedule-status" data-schedule-api="{{ url_for('api.schedules') }}">
+        <div class="status-banner small text-secondary mb-3" id="schedule-status" data-schedule-api="{{ url_for('api.schedules') }}">
           页面加载后会异步校验当前预约时段状态。
         </div>
         <div class="vstack gap-3" id="schedule-list">
@@ -38,6 +38,10 @@
     <div class="col-lg-5">
       <div class="panel-card">
         <h2 class="h4 mb-3">我的预约</h2>
+        <div class="checkpoint mb-3">
+          <strong>预约说明</strong>
+          <p class="mb-0 text-secondary">测评结果达到中度及以上时，建议优先选择最近时段。预约成功后可在后台由咨询师进一步确认。</p>
+        </div>
         <div class="vstack gap-3">
           {% for item in appointments %}
           <div class="timeline-item">
