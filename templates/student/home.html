@@ -1,119 +1,151 @@
 {% extends "base.html" %}
 
+{% block body_class %}student-home-page{% endblock %}
+
 {% block content %}
-<section class="hero-shell py-4 py-lg-5">
+<section class="student-home-shell" data-page="student-home">
   <div class="container">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-6">
-        <span class="soft-badge">智慧校园心理辅导与情绪感知交互子系统</span>
-        <h1 class="display-5 fw-bold mt-3">一个更温和、更及时的校园心理支持入口</h1>
-        <p class="lead text-secondary mt-3">
-          面向学生端、咨询师/管理员端和大屏脱敏看板的一体化心理健康辅助系统。
+    <section class="student-home-hero panel-card">
+      <div class="student-home-hero__copy">
+        <span class="soft-badge">行动优先支持入口</span>
+        <h1 class="display-5 fw-bold mt-3">先做眼前最需要的一步，不必一次把所有问题说清楚。</h1>
+        <p class="lead text-secondary mt-3 mb-0">
+          你可以先测一测、先匿名说一说，或者直接预约咨询。页面会把最容易开始的支持路径放在前面。
         </p>
-        <div class="d-flex flex-wrap gap-3 mt-4">
-          <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('student.assessment') }}">开始心理测评</a>
-          <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{{ url_for('student.vent') }}">进入匿名树洞</a>
-        </div>
-        <div class="journey-strip mt-4">
-          <div class="journey-step">
-            <strong>1</strong>
-            <span>先匿名表达当前感受</span>
-          </div>
-          <div class="journey-step">
-            <strong>2</strong>
-            <span>再做量表测评获取建议</span>
-          </div>
-          <div class="journey-step">
-            <strong>3</strong>
-            <span>需要时直接预约咨询</span>
-          </div>
-        </div>
       </div>
-      <div class="col-lg-6">
-        <div class="glass-board p-4">
-          <h2 class="h4 mb-3">核心交互亮点</h2>
-          <div class="row g-3">
-            <div class="col-sm-6">
-              <div class="feature-card">
-                <h3>匿名表达</h3>
-                <p>降低求助门槛，支持先表达、后决定是否预约。</p>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="feature-card">
-                <h3>自适应界面</h3>
-                <p>根据行为特征与文本状态动态调整页面风格。</p>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="feature-card">
-                <h3>三端联动</h3>
-                <p>学生端、后台和大屏共用数据，侧重点清晰分离。</p>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="feature-card">
-                <h3>脱敏可视化</h3>
-                <p>聚合趋势支持学院决策，不暴露个人隐私。</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="student-home-hero__actions" aria-label="主要支持动作">
+        <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('student.assessment') }}">快速测评</a>
+        <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{{ url_for('student.vent') }}">匿名倾诉</a>
+        <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{{ url_for('student.appointments') }}">预约咨询</a>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="container py-3">
-  <div class="row g-4">
-    {% for scale in scales %}
-    <div class="col-md-6">
-      <div class="panel-card h-100">
-        <div class="d-flex justify-content-between align-items-start gap-3">
-          <div>
-            <h2 class="h4">{{ scale.name }}</h2>
-            <p class="text-secondary">{{ scale.description }}</p>
-          </div>
-          <span class="text-primary fw-semibold">{{ scale.question_count }} 题</span>
+    {% if home_summary %}
+    <section class="panel-card student-home-summary mt-4" data-home-summary="true">
+      <div class="summary-heading">
+        <div>
+          <span class="soft-badge">你的最近进展</span>
+          <h2 class="h4 mt-3 mb-1">从上一次记录继续，而不是重新开始。</h2>
         </div>
-        <a class="btn btn-sm btn-outline-primary rounded-pill mt-3" href="{{ url_for('student.assessment', scale=scale.code) }}">进入测评</a>
+        <p class="text-secondary mb-0">系统只展示和你自己相关的最近记录，便于快速回到合适的支持步骤。</p>
       </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
+      <div class="home-summary-grid mt-3">
+        <article class="summary-chip">
+          <span>最近一次测评</span>
+          <strong>{{ home_summary.latest_assessment.scale_name if home_summary.latest_assessment else "暂无记录" }}</strong>
+        </article>
+        <article class="summary-chip">
+          <span>最近预约状态</span>
+          <strong>{{ home_summary.latest_appointment.status if home_summary.latest_appointment else "暂无预约" }}</strong>
+        </article>
+        <article class="summary-chip">
+          <span>推荐下一步</span>
+          <strong>{{ home_summary.recommended_action }}</strong>
+        </article>
+      </div>
+    </section>
+    {% endif %}
 
-<section class="container py-2 pb-4">
-  <div class="row g-4">
-    <div class="col-lg-4">
-      <div class="panel-card h-100">
-        <h2 class="h5 mb-3">低压力入口</h2>
-        <ul class="soft-list">
-          <li>匿名树洞默认不展示学生身份。</li>
-          <li>学生端文案保持温和，不强化标签。</li>
-          <li>移动端按钮和输入区域优先适配触控。</li>
-        </ul>
+    <section id="support-paths" class="student-home-section mt-4">
+      <div class="student-home-section__heading">
+        <span class="soft-badge">支持路径</span>
+        <h2 class="h3 mt-3 mb-2">按你现在的状态，直接进入对应入口。</h2>
+        <p class="text-secondary mb-0">每张卡片都对应一个低门槛起点，不需要先完整描述问题。</p>
       </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="panel-card h-100">
-        <h2 class="h5 mb-3">智能感知路径</h2>
-        <ul class="soft-list">
-          <li>行为信号与文本信号共同参与情绪判断。</li>
-          <li>根据状态切换界面模式和提示语。</li>
-          <li>高风险内容优先引导预约咨询。</li>
-        </ul>
+      <div class="support-path-grid mt-4">
+        <article class="panel-card support-path-card">
+          <p class="support-path-card__eyebrow">先稳定状态</p>
+          <h3 class="h5">最近压力有点大</h3>
+          <p class="text-secondary">先用简短量表快速定位压力来源，再决定是否继续深入。</p>
+          <a class="btn btn-primary rounded-pill px-4 mt-2" href="{{ url_for('student.assessment', scale='PHQ-9') }}">去做快速测评</a>
+        </article>
+        <article class="panel-card support-path-card">
+          <p class="support-path-card__eyebrow">先看清波动</p>
+          <h3 class="h5">最近有些焦虑</h3>
+          <p class="text-secondary">从焦虑相关量表开始，拿到一份更具体的当下状态提示。</p>
+          <a class="btn btn-outline-primary rounded-pill px-4 mt-2" href="{{ url_for('student.assessment', scale='GAD-7') }}">查看焦虑测评</a>
+        </article>
+        <article class="panel-card support-path-card">
+          <p class="support-path-card__eyebrow">先说出来</p>
+          <h3 class="h5">想先匿名说一说</h3>
+          <p class="text-secondary">不显示学生身份，可以先把最近的感受写下来，再决定下一步。</p>
+          <a class="btn btn-outline-primary rounded-pill px-4 mt-2" href="{{ url_for('student.vent') }}">进入匿名倾诉</a>
+        </article>
+        <article class="panel-card support-path-card">
+          <p class="support-path-card__eyebrow">直接连接老师</p>
+          <h3 class="h5">想直接预约咨询</h3>
+          <p class="text-secondary">如果你已经知道需要人工支持，可以直接查看可预约时段。</p>
+          <a class="btn btn-outline-primary rounded-pill px-4 mt-2" href="{{ url_for('student.appointments') }}">立即预约咨询</a>
+        </article>
       </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="panel-card h-100">
-        <h2 class="h5 mb-3">后续支持</h2>
-        <div class="checkpoint">
-          <span class="soft-badge">推荐顺序</span>
-          <p class="mt-3 mb-0 text-secondary">树洞记录情绪，测评形成结果，预约连接人工支持，大屏和后台仅查看脱敏聚合数据。</p>
+    </section>
+
+    <section id="quick-scales" class="student-home-section mt-4">
+      <div class="student-home-section__heading">
+        <span class="soft-badge">快速测评</span>
+        <h2 class="h3 mt-3 mb-2">常用量表放在前面，适合先做一个短入口判断。</h2>
+      </div>
+      <div class="quick-scales-grid mt-4">
+        {% for scale in scales %}
+        <article class="panel-card quick-scale-card">
+          <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+              <h3 class="h5 mb-2">{{ scale.name }}</h3>
+              <p class="text-secondary mb-0">{{ scale.description }}</p>
+            </div>
+            <span class="soft-badge quick-scale-card__count">{{ scale.question_count }} 题</span>
+          </div>
+          <a class="btn btn-outline-primary rounded-pill px-4 mt-3" href="{{ url_for('student.assessment', scale=scale.code) }}">开始这项测评</a>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="instant-relief" class="student-home-section mt-4">
+      <div class="panel-card">
+        <div class="student-home-section__heading">
+          <span class="soft-badge">即时缓解</span>
+          <h2 class="h3 mt-3 mb-2">如果现在就有点撑不住，先做几件能立刻开始的小事。</h2>
+        </div>
+        <div class="instant-relief-grid mt-4">
+          <article class="feature-card">
+            <h3>30 秒呼吸校准</h3>
+            <p class="text-secondary mb-0">吸气 4 秒，停 2 秒，呼气 6 秒，连续做 3 轮，先让身体慢下来。</p>
+          </article>
+          <article class="feature-card">
+            <h3>把感受写成一句话</h3>
+            <p class="text-secondary mb-0">只写“我现在最难受的是……”，不用整理成完整故事，先降低表达门槛。</p>
+          </article>
+          <article class="feature-card">
+            <h3>换到更合适的支持路径</h3>
+            <p class="text-secondary mb-0">如果情绪持续升级，直接跳转匿名倾诉或预约咨询，不必按顺序操作。</p>
+          </article>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section id="trust-guardrails" class="student-home-section mt-4">
+      <div class="panel-card">
+        <div class="student-home-section__heading">
+          <span class="soft-badge">隐私与边界</span>
+          <h2 class="h3 mt-3 mb-2">你看到的是自己的入口，老师和大屏看到的是脱敏后的趋势。</h2>
+        </div>
+        <div class="trust-guardrails-grid mt-4">
+          <article class="feature-card">
+            <h3>匿名入口默认降暴露</h3>
+            <p class="text-secondary mb-0">匿名倾诉不会在前台页面展示你的学生身份，适合先表达、后决定。</p>
+          </article>
+          <article class="feature-card">
+            <h3>聚合趋势不回溯个人</h3>
+            <p class="text-secondary mb-0">仅展示脱敏后的聚合数据，用于学院趋势观察，不回显个人明细。</p>
+          </article>
+          <article class="feature-card">
+            <h3>高风险时优先连接人工支持</h3>
+            <p class="text-secondary mb-0">当系统判断需要更直接支持时，会优先引导你进入预约咨询，而不是停留在自助页面。</p>
+          </article>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 {% endblock %}
