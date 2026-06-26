@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+
+{% block title %}后台总览{% endblock %}
+
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-md-3">
+    <div class="metric-card">
+      <span>学生总数</span>
+      <strong>{{ summary.kpis.students }}</strong>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card">
+      <span>测评总数</span>
+      <strong>{{ summary.kpis.assessments }}</strong>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card">
+      <span>树洞条数</span>
+      <strong>{{ summary.kpis.posts }}</strong>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card">
+      <span>预约总数</span>
+      <strong>{{ summary.kpis.appointments }}</strong>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-6">
+    <div class="panel-card h-100">
+      <h2 class="h4 mb-3">情绪分布</h2>
+      <ul class="list-unstyled mb-0 text-secondary lh-lg">
+        {% for emotion, count in summary.emotion_counts.items() %}
+        <li>{{ emotion }}：{{ count }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel-card h-100">
+      <h2 class="h4 mb-3">量表使用情况</h2>
+      <ul class="list-unstyled mb-0 text-secondary lh-lg">
+        {% for name, count in summary.scale_stats.items() %}
+        <li>{{ name }}：{{ count }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

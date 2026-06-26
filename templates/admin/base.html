@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="panel-card admin-header mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h1 class="h3 mb-1">心理中心后台</h1>
+        <p class="text-secondary mb-0">当前角色：{{ admin_role or '未登录' }}</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.dashboard') }}">统计总览</a>
+        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.assessments') }}">测评记录</a>
+        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.vents') }}">树洞记录</a>
+        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.appointments') }}">预约处理</a>
+        {% if admin_logged_in %}
+        <a class="btn btn-primary rounded-pill" href="{{ url_for('admin.logout') }}">退出后台</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% block admin_content %}{% endblock %}
+</div>
+{% endblock %}

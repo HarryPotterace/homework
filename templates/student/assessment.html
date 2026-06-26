@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}心理测评{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="panel-card">
+        <h1 class="h4 mb-3">量表选择</h1>
+        <div class="list-group list-group-flush">
+          {% for item in scales %}
+          <a class="list-group-item list-group-item-action {% if item.code == active_scale %}active{% endif %}" href="{{ url_for('student.assessment', scale=item.code) }}">
+            <strong>{{ item.name }}</strong>
+            <div class="small">{% if item.description %}{{ item.description }}{% endif %}</div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% if result %}
+      <div class="panel-card mt-4 result-card">
+        <h2 class="h5">测评结果</h2>
+        <p class="display-6 fw-bold text-primary">{{ result.score }}</p>
+        <p class="fw-semibold">{{ result.level }}</p>
+        <p class="text-secondary mb-0">{{ result.advice }}</p>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-8">
+      <div class="panel-card">
+        <h2 class="h3 mb-2">{{ scale.name }}</h2>
+        <p class="text-secondary">{{ scale.description }}</p>
+        <form method="post" class="vstack gap-4 mt-4">
+          <input type="hidden" name="scale_code" value="{{ active_scale }}">
+          {% for question in scale.questions %}
+          <fieldset class="assessment-block">
+            <legend class="fs-6 fw-semibold">{{ loop.index }}. {{ question }}</legend>
+            <div class="d-flex flex-wrap gap-3 mt-3">
+              {% for value, label in scale.options %}
+              <label class="option-pill">
+                <input type="radio" name="q{{ loop.parent.index }}" value="{{ value }}" required>
+                <span>{{ label }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          {% endfor %}
+          <button class="btn btn-primary rounded-pill align-self-start px-4">提交测评</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

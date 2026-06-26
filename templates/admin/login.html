@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}后台登录{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-5">
+      <div class="panel-card">
+        <h1 class="h3 mb-4">咨询师 / 管理员登录</h1>
+        <form method="post" class="vstack gap-3">
+          <div>
+            <label class="form-label">账号</label>
+            <input class="form-control" name="username" required>
+          </div>
+          <div>
+            <label class="form-label">密码</label>
+            <input class="form-control" type="password" name="password" required>
+          </div>
+          <button class="btn btn-primary rounded-pill">进入后台</button>
+        </form>
+        <p class="small text-secondary mt-3 mb-0">默认示例账号：consultant / Admin12345</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

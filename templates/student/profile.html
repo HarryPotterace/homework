@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}个人信息{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="panel-card">
+    <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-4">
+      <div>
+        <h1 class="h3 mb-1">个人信息</h1>
+        <p class="text-secondary mb-0">学号：{{ user.student_no }}</p>
+      </div>
+      <span class="soft-badge">移动端学生视图</span>
+    </div>
+    <form method="post" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">昵称</label>
+        <input class="form-control" name="nickname" value="{{ user.nickname }}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">联系方式</label>
+        <input class="form-control" name="contact" value="{{ user.contact }}" required>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary rounded-pill">保存修改</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}匿名树洞{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="panel-card">
+        <h1 class="h3 mb-2">匿名树洞倾诉</h1>
+        <p class="text-secondary">系统会对文本做情绪标签推断，但不会在学生端公开身份信息。</p>
+        <form method="post" class="vstack gap-3 mt-4">
+          <div>
+            <label class="form-label">标题</label>
+            <input class="form-control" name="title" maxlength="100" required>
+          </div>
+          <div>
+            <label class="form-label">内容</label>
+            <textarea class="form-control" name="content" rows="7" required></textarea>
+          </div>
+          <button class="btn btn-primary rounded-pill align-self-start">匿名发布</button>
+        </form>
+        {% if result %}
+        <div class="alert alert-warning mt-4 mb-0">
+          当前文本情绪标签：<strong>{{ result.emotion }}</strong>，风险等级：<strong>{{ result.risk_level }}</strong>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="panel-card">
+        <h2 class="h4 mb-3">最近的匿名动态</h2>
+        <div class="vstack gap-3">
+          {% for post in posts %}
+          <article class="timeline-item">
+            <div class="d-flex justify-content-between align-items-center gap-3">
+              <h3 class="h6 mb-0">{{ post.title }}</h3>
+              <span class="soft-badge">{{ post.emotion }}</span>
+            </div>
+            <p class="text-secondary small mb-2">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p class="mb-0">{{ post.content }}</p>
+          </article>
+          {% else %}
+          <p class="text-secondary mb-0">暂无内容。</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

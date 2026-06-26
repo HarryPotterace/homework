@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-shell py-4 py-lg-5">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <span class="soft-badge">智慧校园心理辅导与情绪感知交互子系统</span>
+        <h1 class="display-5 fw-bold mt-3">一个更温和、更及时的校园心理支持入口</h1>
+        <p class="lead text-secondary mt-3">
+          面向学生端、咨询师/管理员端和大屏脱敏看板的一体化心理健康辅助系统。
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('student.assessment') }}">开始心理测评</a>
+          <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{{ url_for('student.vent') }}">进入匿名树洞</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass-board p-4">
+          <h2 class="h4 mb-3">核心交互亮点</h2>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="feature-card">
+                <h3>匿名表达</h3>
+                <p>降低求助门槛，支持先表达、后决定是否预约。</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-card">
+                <h3>自适应界面</h3>
+                <p>根据行为特征与文本状态动态调整页面风格。</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-card">
+                <h3>三端联动</h3>
+                <p>学生端、后台和大屏共用数据，侧重点清晰分离。</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-card">
+                <h3>脱敏可视化</h3>
+                <p>聚合趋势支持学院决策，不暴露个人隐私。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-3">
+  <div class="row g-4">
+    {% for scale in scales %}
+    <div class="col-md-6">
+      <div class="panel-card h-100">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <h2 class="h4">{{ scale.name }}</h2>
+            <p class="text-secondary">{{ scale.description }}</p>
+          </div>
+          <span class="text-primary fw-semibold">{{ scale.question_count }} 题</span>
+        </div>
+        <a class="btn btn-sm btn-outline-primary rounded-pill mt-3" href="{{ url_for('student.assessment', scale=scale.code) }}">进入测评</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>学院心理态势脱敏看板</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  </head>
+  <body class="screen-body">
+    <main class="screen-shell">
+      <header class="screen-header">
+        <div>
+          <p class="screen-kicker">Large Screen Dashboard</p>
+          <h1>学院心理态势脱敏数据看板</h1>
+        </div>
+        <div class="screen-clock">仅展示脱敏聚合数据</div>
+      </header>
+      <section class="screen-grid">
+        <article class="screen-card">
+          <span>测评总数</span>
+          <strong>{{ summary.kpis.assessments }}</strong>
+        </article>
+        <article class="screen-card">
+          <span>预约总数</span>
+          <strong>{{ summary.kpis.appointments }}</strong>
+        </article>
+        <article class="screen-card">
+          <span>树洞条数</span>
+          <strong>{{ summary.kpis.posts }}</strong>
+        </article>
+        <article class="screen-card">
+          <span>学生总数</span>
+          <strong>{{ summary.kpis.students }}</strong>
+        </article>
+      </section>
+      <section class="screen-grid screen-grid-large">
+        <article class="screen-panel">
+          <h2>情绪分布</h2>
+          <ul>
+            {% for emotion, count in summary.emotion_counts.items() %}
+            <li><span>{{ emotion }}</span><strong>{{ count }}</strong></li>
+            {% endfor %}
+          </ul>
+        </article>
+        <article class="screen-panel">
+          <h2>量表使用情况</h2>
+          <ul>
+            {% for scale, count in summary.scale_stats.items() %}
+            <li><span>{{ scale }}</span><strong>{{ count }}</strong></li>
+            {% endfor %}
+          </ul>
+        </article>
+        <article class="screen-panel">
+          <h2>预约热度</h2>
+          <ul>
+            {% for item in summary.schedule_hotspots %}
+            <li><span>{{ item.date }}</span><strong>{{ item.count }}</strong></li>
+            {% else %}
+            <li><span>暂无预约</span><strong>0</strong></li>
+            {% endfor %}
+          </ul>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

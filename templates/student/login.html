@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}学生登录{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-5">
+      <div class="panel-card">
+        <h1 class="h3 mb-4">学生登录</h1>
+        <form method="post" class="vstack gap-3">
+          <div>
+            <label class="form-label">学号</label>
+            <input class="form-control" name="student_no" required>
+          </div>
+          <div>
+            <label class="form-label">密码</label>
+            <input class="form-control" type="password" name="password" required>
+          </div>
+          <button class="btn btn-primary rounded-pill">登录</button>
+        </form>
+        <p class="mt-3 mb-0">还没有账号？<a href="{{ url_for('student.register') }}">立即注册</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

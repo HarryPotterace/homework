@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}预约咨询{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="panel-card">
+        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+          <h1 class="h3 mb-0">心理咨询预约</h1>
+          <span class="soft-badge">移动端友好布局</span>
+        </div>
+        <div class="vstack gap-3">
+          {% for schedule in schedules %}
+          <div class="schedule-card">
+            <div>
+              <h2 class="h6 mb-1">{{ schedule.counselor_name }} · {{ schedule.title }}</h2>
+              <p class="text-secondary mb-2">{{ schedule.schedule_date }} {{ schedule.slot }}</p>
+            </div>
+            {% if schedule.is_available %}
+            <form method="post" class="schedule-form">
+              <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
+              <input class="form-control form-control-sm" name="note" placeholder="可选备注">
+              <button class="btn btn-sm btn-primary rounded-pill">预约</button>
+            </form>
+            {% else %}
+            <span class="badge text-bg-secondary">已预约</span>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="panel-card">
+        <h2 class="h4 mb-3">我的预约</h2>
+        <div class="vstack gap-3">
+          {% for item in appointments %}
+          <div class="timeline-item">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+              <strong>{{ item.schedule.counselor_name }}</strong>
+              <span class="soft-badge">{{ item.status }}</span>
+            </div>
+            <p class="text-secondary small mb-2">{{ item.schedule.schedule_date }} {{ item.schedule.slot }}</p>
+            <p class="mb-2">{{ item.note or "无备注" }}</p>
+            {% if item.status != '已取消' and item.status != '已完成' %}
+            <form method="post" action="{{ url_for('student.cancel_appointment', appointment_id=item.id) }}">
+              <button class="btn btn-sm btn-outline-danger rounded-pill">取消预约</button>
+            </form>
+            {% endif %}
+          </div>
+          {% else %}
+          <p class="text-secondary mb-0">你还没有预约记录。</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

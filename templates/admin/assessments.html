@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+
+{% block title %}测评记录{% endblock %}
+
+{% block admin_content %}
+<div class="panel-card">
+  <h2 class="h4 mb-3">学生测评记录</h2>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>学号</th>
+          <th>昵称</th>
+          <th>量表</th>
+          <th>得分</th>
+          <th>结果</th>
+          <th>时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in records %}
+        <tr>
+          <td>{{ item.user.student_no }}</td>
+          <td>{{ item.user.nickname }}</td>
+          <td>{{ item.scale_name }}</td>
+          <td>{{ item.score }}</td>
+          <td>{{ item.result_level }}</td>
+          <td>{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-secondary">暂无测评记录</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
