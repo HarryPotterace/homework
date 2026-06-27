@@ -32,6 +32,12 @@
             </div>
           </div>
         </div>
+        <div class="emotion-meter mt-4">
+          <div class="emotion-meter__bar">
+            <span class="emotion-meter__fill" data-field="meter"></span>
+          </div>
+          <p class="small text-secondary mb-0">情绪提示仅用于课程项目演示，不替代正式心理诊断。</p>
+        </div>
         <div class="mt-4">
           <label class="form-label">情绪留言输入框</label>
           <textarea class="form-control" id="pause-input" rows="5" placeholder="停顿、删除和频繁操作会被统计为交互信号。"></textarea>
@@ -46,6 +52,10 @@
           <li>低落时提升留白和提示文字的温和程度。</li>
           <li>高风险信息建议进一步转入测评或预约页面。</li>
         </ul>
+        <div class="helper-panel mb-4">
+          <strong>界面反馈规则</strong>
+          <p class="mb-0 text-secondary">焦虑状态会降低刺激性，低落状态会提升留白和舒缓提示，平静状态保持默认节奏。</p>
+        </div>
         <div class="d-grid gap-2 mt-4">
           <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('student.assessment') }}">进入测评</a>
           <a class="btn btn-primary rounded-pill" href="{{ url_for('student.appointments') }}">预约咨询</a>

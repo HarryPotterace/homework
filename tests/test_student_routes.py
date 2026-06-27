@@ -1,5 +1,6 @@
 from app import create_app, db
-from app.models import Appointment, AssessmentRecord, CounselorSchedule, VentPost
+from app.models import Appointment, AssessmentRecord, CounselorSchedule, User, VentPost
+from app.services.home import build_student_home_summary
 
 
 def build_app():
@@ -63,6 +64,176 @@ def test_register_page_includes_validation_script():
 
     assert response.status_code == 200
     assert b"validation.js" in response.data
+
+
+def test_home_page_prioritizes_support_actions():
+    app = build_app()
+    client = app.test_client()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b'data-page="student-home"' in response.data
+    assert "快速测评".encode("utf-8") in response.data
+    assert "匿名倾诉".encode("utf-8") in response.data
+    assert "预约咨询".encode("utf-8") in response.data
+    assert b'id="support-paths"' in response.data
+
+
+def test_home_page_includes_support_path_cards():
+    app = build_app()
+    client = app.test_client()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b'id="support-paths"' in response.data
+    assert "最近压力有点大".encode("utf-8") in response.data
+    assert "最近有些焦虑".encode("utf-8") in response.data
+    assert "想先匿名说一说".encode("utf-8") in response.data
+    assert "想直接预约咨询".encode("utf-8") in response.data
+
+
+def test_home_page_includes_relief_and_privacy_sections():
+    app = build_app()
+    client = app.test_client()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b'id="instant-relief"' in response.data
+    assert b'id="trust-guardrails"' in response.data
+    assert "仅展示脱敏后的聚合数据".encode("utf-8") in response.data
+
+
+def test_logged_in_home_page_shows_personalized_summary():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+    login_student(client)
+
+    with app.app_context():
+        user = User.query.filter_by(student_no="20250001").one()
+        schedule = CounselorSchedule.query.filter_by(is_available=True).first()
+        db.session.add(
+            AssessmentRecord(
+                user_id=user.id,
+                scale_code="PHQ-9",
+                scale_name="PHQ-9 抑郁筛查",
+                score=9,
+                result_level="轻度风险",
+                advice="建议继续观察并保持规律作息。",
+            )
+        )
+        db.session.add(
+            Appointment(
+                user_id=user.id,
+                schedule_id=schedule.id,
+                status="待确认",
+                note="希望尽快安排咨询。",
+            )
+        )
+        db.session.commit()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b'data-home-summary="true"' in response.data
+    assert "最近一次测评".encode("utf-8") in response.data
+    assert "PHQ-9 抑郁筛查".encode("utf-8") in response.data
+    assert "最近预约状态".encode("utf-8") in response.data
+    assert "待确认".encode("utf-8") in response.data
+    assert "推荐下一步".encode("utf-8") in response.data
+    assert "继续查看测评建议".encode("utf-8") in response.data
+
+
+def test_logged_in_home_page_shows_summary_shell_without_history():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+    login_student(client)
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert b'data-home-summary="true"' in response.data
+    assert "最近一次测评".encode("utf-8") in response.data
+    assert "暂无记录".encode("utf-8") in response.data
+    assert "最近预约状态".encode("utf-8") in response.data
+    assert "暂无预约".encode("utf-8") in response.data
+    assert "推荐下一步".encode("utf-8") in response.data
+    assert "先完成一次快速测评".encode("utf-8") in response.data
+
+
+def test_logged_in_home_page_only_shows_current_student_summary_data():
+    app = build_app()
+    client = app.test_client()
+    register_student(client, student_no="20250001")
+    register_student(client, student_no="20250002")
+    login_student(client, student_no="20250001")
+
+    with app.app_context():
+        current_user = User.query.filter_by(student_no="20250001").one()
+        other_user = User.query.filter_by(student_no="20250002").one()
+        schedules = CounselorSchedule.query.filter_by(is_available=True).limit(2).all()
+
+        db.session.add(
+            AssessmentRecord(
+                user_id=current_user.id,
+                scale_code="PHQ-9",
+                scale_name="当前用户测评",
+                score=8,
+                result_level="轻度风险",
+                advice="当前用户建议",
+            )
+        )
+        db.session.add(
+            Appointment(
+                user_id=current_user.id,
+                schedule_id=schedules[0].id,
+                status="当前用户预约",
+                note="当前用户备注",
+            )
+        )
+        db.session.add(
+            AssessmentRecord(
+                user_id=other_user.id,
+                scale_code="GAD-7",
+                scale_name="其他用户测评",
+                score=14,
+                result_level="中度风险",
+                advice="其他用户建议",
+            )
+        )
+        db.session.add(
+            Appointment(
+                user_id=other_user.id,
+                schedule_id=schedules[1].id,
+                status="其他用户预约",
+                note="其他用户备注",
+            )
+        )
+        db.session.commit()
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "当前用户测评".encode("utf-8") in response.data
+    assert "当前用户预约".encode("utf-8") in response.data
+    assert "其他用户测评".encode("utf-8") not in response.data
+    assert "其他用户预约".encode("utf-8") not in response.data
+
+
+def test_student_home_summary_service_omits_has_summary_flag():
+    app = build_app()
+    client = app.test_client()
+    register_student(client)
+
+    with app.app_context():
+        user = User.query.filter_by(student_no="20250001").one()
+        summary = build_student_home_summary(user.id)
+
+    assert "has_summary" not in summary
 
 
 def test_logged_in_student_can_fetch_schedule_options():

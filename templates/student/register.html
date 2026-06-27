@@ -28,6 +28,10 @@
           <div class="col-12">
             <label class="form-label">密码</label>
             <input class="form-control" type="password" name="password" minlength="8" required data-password-field="true">
+            <div class="helper-panel mt-3">
+              <strong>密码规则</strong>
+              <p class="mb-0 text-secondary">至少 8 位，同时包含字母和数字。前端会先做校验，后端再保存。</p>
+            </div>
           </div>
           <div class="col-12">
             <button class="btn btn-primary rounded-pill">提交注册</button>

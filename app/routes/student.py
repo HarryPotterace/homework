@@ -6,6 +6,7 @@ from app.extensions import db
 from app.models import Appointment, AssessmentRecord, CounselorSchedule, User, VentPost
 from app.services.assessment import get_scale_catalog, get_scale_detail, score_assessment
 from app.services.emotion import infer_text_emotion
+from app.services.home import build_student_home_summary
 
 
 student_bp = Blueprint("student", __name__)
@@ -13,7 +14,15 @@ student_bp = Blueprint("student", __name__)
 
 @student_bp.route("/")
 def home():
-    return render_template("student/home.html", scales=get_scale_catalog())
+    home_summary = None
+    if session.get("user_id"):
+        home_summary = build_student_home_summary(session["user_id"])
+
+    return render_template(
+        "student/home.html",
+        scales=get_scale_catalog(),
+        home_summary=home_summary,
+    )
 
 
 @student_bp.route("/register", methods=["GET", "POST"])
