@@ -12,7 +12,8 @@
 - 数据库运行边界：已改为 MySQL-only，非测试环境禁止使用 SQLite 或其他数据库。
 - 自动化测试：已执行 `python -m pytest -q`，当前为 `40 passed`。
 - 已补统一版截图：`fig-01`、`fig-07`、`fig-09`。
-- 仍待补最终资产：`fig-02` 到 `fig-06`、`fig-08`、`fig-10` 到 `fig-12`、兼容性实机记录、正式 Word 报告。
+- 已补结构图：`fig-10`、`fig-11`、`fig-12`。
+- 仍待补最终资产：`fig-02` 到 `fig-06`、`fig-08`、兼容性实机记录、正式 Word 报告。
 
 ## 3. 必须包含
 
@@ -52,9 +53,9 @@
 ## 5. 报告插图检查
 - `fig-01`、`fig-07`、`fig-09` 已采集
 - `fig-02` 到 `fig-06`、`fig-08` 待补
-- `fig-10-system-flow.png` 待由 `docs/assets/system-flow.md` 导出
-- `fig-11-er-diagram.png` 待由 `docs/assets/er-diagram.md` 导出
-- `fig-12-class-tree.png` 待由 `docs/assets/class-tree.md` 导出
+- `fig-10-system-flow.png` 已导出
+- `fig-11-er-diagram.png` 已导出
+- `fig-12-class-tree.png` 已导出
 - 功能、性能、兼容性测试表待插入正式 Word 报告
 
 ## 6. 测试证据检查

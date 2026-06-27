@@ -51,7 +51,10 @@
 
 ## 5. 当前状态
 - 命名规范和用途已确定。
-- 三张结构图的源码已经生成，待导出成图片。
+- 三张结构图已导出成图片：
+  - `docs/assets/fig-10-system-flow.png`
+  - `docs/assets/fig-11-er-diagram.png`
+  - `docs/assets/fig-12-class-tree.png`
 - 已补统一版关键页面截图：
   - `docs/assets/screenshots/fig-01-student-home.png`
   - `docs/assets/screenshots/fig-07-admin-dashboard.png`

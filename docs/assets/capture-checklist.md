@@ -22,9 +22,9 @@
 
 | 编号 | 源文件 | 导出文件名 | 报告章节 | 当前状态 |
 | --- | --- | --- | --- | --- |
-| 10 | `docs/assets/system-flow.md` | `fig-10-system-flow.png` | 第三章 | 已生成源码，待导出图片 |
-| 11 | `docs/assets/er-diagram.md` | `fig-11-er-diagram.png` | 第四章 | 已生成源码，待导出图片 |
-| 12 | `docs/assets/class-tree.md` | `fig-12-class-tree.png` | 第三章 | 已生成源码，待导出图片 |
+| 10 | `docs/assets/system-flow.md` | `fig-10-system-flow.png` | 第三章 | 已导出，见 `docs/assets/fig-10-system-flow.png` |
+| 11 | `docs/assets/er-diagram.md` | `fig-11-er-diagram.png` | 第四章 | 已导出，见 `docs/assets/fig-11-er-diagram.png` |
+| 12 | `docs/assets/class-tree.md` | `fig-12-class-tree.png` | 第三章 | 已导出，见 `docs/assets/fig-12-class-tree.png` |
 
 ## 4. 测试附件清单
 
@@ -45,6 +45,5 @@
 
 ## 6. 当前缺口汇总
 - 仍待采集页面：`fig-02`、`fig-03`、`fig-04`、`fig-05`、`fig-06`、`fig-08`
-- 仍待导出结构图：`fig-10`、`fig-11`、`fig-12`
 - 仍待补测试附件：`T-03`
 - `T-04` 已有文本证据，终端截图待补

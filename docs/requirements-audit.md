@@ -27,8 +27,8 @@
 | 项目交付文档管理 | 已建立统一总控文档，已登记用途、边界和状态 | `docs/document-control.md` |
 | 参考文献与算法依据 | 未完成 | 需补充到 `docs/course-report-outline.md` 与设计说明 |
 | 文档中明确每个交付物用途与内容边界 | 已完成总控约束，后续按该清单回填终稿 | `docs/document-control.md`、`docs/final-submission-checklist.md` |
-| 类谱系树及其说明 | 已生成源文件，待导出图片 | `docs/assets/class-tree.md` |
-| 系统流程图、ER 图、界面截图 | 流程图和 ER 图源文件已生成，界面截图待人工采集 | `docs/assets/system-flow.md`、`docs/assets/er-diagram.md`、`docs/assets/capture-checklist.md` |
+| 类谱系树及其说明 | 已生成源文件并导出图片 | `docs/assets/class-tree.md`、`docs/assets/fig-12-class-tree.png` |
+| 系统流程图、ER 图、界面截图 | 流程图和 ER 图已导出，界面截图部分已采集，剩余页面待人工采集 | `docs/assets/system-flow.md`、`docs/assets/er-diagram.md`、`docs/assets/capture-checklist.md` |
 | 性能测试与兼容性测试 | 性能已补本地实测数据，兼容性待实机验证 | `docs/test-report.md` |
 | 文件夹命名规则与截止时间 | 已锁定为终稿必检项 | `docs/course-report-outline.md` |
 | 完整工程源码 + 系统配置说明书 + 数据库 SQL | 已形成可交付底稿，当前运行时限定为 MySQL-only | `app/`、`sql/`、`docs/deployment-guide.md`、`docs/database-design.md` |
@@ -38,7 +38,7 @@
 - 当前主要缺口不在功能主干，而在“最终交付闭环”：
   - 正式 `Word` 报告尚未排版导出。
   - 正文底稿已完成首版，但图号、表号和插图尚未回填。
-  - 结构图源文件已生成，但尚未导出为报告插图。
+  - 结构图已导出，但尚未全部回填到正式 Word 报告。
   - 页面截图已补 `fig-01`、`fig-07`、`fig-09`，其余截图和终端测试截图仍未人工采集。
   - 兼容性测试尚未执行实机验证。
   - 部署说明和数据库说明已经具备正式底稿，但还需要随最终实现做最后一次校订。
