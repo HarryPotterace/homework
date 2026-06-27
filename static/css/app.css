@@ -166,74 +166,390 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(43, 116, 128, 0.2), transparent 28%),
-    linear-gradient(145deg, #051b23 0%, #0b3441 50%, #103d4a 100%);
+    radial-gradient(circle at 18% 18%, rgba(83, 214, 194, 0.18), transparent 24%),
+    radial-gradient(circle at 85% 10%, rgba(87, 154, 255, 0.18), transparent 28%),
+    linear-gradient(145deg, #04161f 0%, #0a2533 48%, #102a38 100%);
   color: #effcfb;
 }
 
-.screen-shell {
-  padding: 2rem;
+.screen-board {
+  width: min(1480px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 1.75rem 0 2rem;
 }
 
 .screen-header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  gap: 1rem;
+  align-items: stretch;
+  gap: 1.25rem;
   margin-bottom: 1.5rem;
 }
 
-.screen-header h1 {
-  margin: 0;
-  font-size: 2.2rem;
+.screen-header-copy,
+.screen-meta-panel,
+.screen-kpi-card,
+.screen-panel,
+.screen-focus-panel {
+  border: 1px solid rgba(178, 232, 255, 0.14);
+  background: rgba(7, 23, 34, 0.72);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.screen-header-copy,
+.screen-meta-panel,
+.screen-panel,
+.screen-focus-panel {
+  border-radius: 28px;
+}
+
+.screen-header-copy {
+  flex: 1 1 auto;
+  padding: 1.6rem 1.8rem;
+}
+
+.screen-header-copy h1 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.08;
+}
+
+.screen-subtitle,
+.screen-note,
+.screen-meta-note,
+.screen-kpi-card small,
+.screen-chart-empty,
+.screen-chart-value,
+.screen-chart-caption {
+  color: rgba(239, 252, 251, 0.72);
 }
 
 .screen-kicker,
-.screen-clock {
-  color: rgba(239, 252, 251, 0.7);
+.screen-panel-kicker,
+.screen-meta-label {
+  margin: 0;
+  color: #86defd;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.screen-grid {
+.screen-subtitle {
+  max-width: 48rem;
+  margin: 1rem 0 0;
+  font-size: 1rem;
+}
+
+.screen-meta-panel {
+  min-width: 280px;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  align-content: center;
+}
+
+.screen-meta-value {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #f6fffe;
+}
+
+.screen-meta-note {
+  margin: 0;
+}
+
+.screen-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.screen-grid-large {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 1.25rem;
-}
-
-.screen-card,
-.screen-panel {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
+.screen-kpi-card {
+  border-radius: 24px;
+  padding: 1.3rem 1.35rem;
   color: #effcfb;
 }
 
+.screen-kpi-card span,
+.screen-focus-item span {
+  display: block;
+  color: rgba(239, 252, 251, 0.76);
+}
+
+.screen-kpi-card strong,
+.screen-focus-item strong {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1;
+  color: #f9fffe;
+}
+
+.screen-kpi-card small {
+  display: block;
+  margin-top: 0.9rem;
+}
+
+.screen-stage-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.screen-focus-panel,
 .screen-panel {
-  padding: 1.5rem;
+  padding: 1.4rem;
+  color: #effcfb;
 }
 
-.screen-panel ul {
-  list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
-}
-
-.screen-panel li {
+.screen-panel-header {
   display: flex;
   justify-content: space-between;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.screen-focus-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.screen-focus-item {
+  padding: 1rem 1.05rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(178, 232, 255, 0.1);
+}
+
+.screen-note {
+  margin: 1rem 0 0;
+}
+
+.screen-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.screen-chart {
+  display: grid;
+  gap: 0.85rem;
+  min-height: 260px;
+}
+
+.screen-chart-row {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.screen-chart-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.screen-chart-label {
+  font-weight: 600;
+  color: #f6fffe;
+}
+
+.screen-chart-track {
+  overflow: hidden;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: rgba(134, 222, 253, 0.12);
+}
+
+.screen-chart-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #46c4d9 0%, #86defd 48%, #baf9e7 100%);
+}
+
+.screen-chart-empty {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  border-radius: 20px;
+  border: 1px dashed rgba(178, 232, 255, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-dashboard,
+.admin-workbench-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.admin-kpi-grid,
+.admin-workbench-grid,
+.admin-analysis-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-kpi-card {
+  min-height: 168px;
+}
+
+.admin-kpi-card small {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.admin-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-workbench-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-analysis-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(280px, 0.7fr);
+}
+
+.admin-module-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.4rem;
+  border-radius: 24px;
+  border: 1px solid rgba(36, 124, 138, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 32px rgba(20, 81, 91, 0.07);
+}
+
+.admin-module-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.admin-module-count {
+  min-width: 3rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(36, 124, 138, 0.12);
+  color: var(--primary-deep);
+  font-weight: 700;
+  text-align: center;
+}
+
+.admin-queue-list,
+.admin-focus-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-queue-item,
+.admin-focus-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background: #f8fcfb;
+  border: 1px solid rgba(36, 124, 138, 0.08);
+}
+
+.admin-queue-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.admin-queue-tag.is-primary {
+  background: rgba(36, 124, 138, 0.14);
+  color: var(--primary-deep);
+}
+
+.admin-queue-tag.is-warning {
+  background: rgba(255, 193, 7, 0.18);
+  color: #8a5d00;
+}
+
+.admin-queue-tag.is-danger {
+  background: rgba(158, 78, 95, 0.16);
+  color: var(--danger);
+}
+
+.admin-queue-tag.is-muted {
+  background: rgba(25, 52, 59, 0.08);
+  color: var(--muted);
+}
+
+.dashboard-chart {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.dashboard-chart-bar {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.dashboard-chart-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.dashboard-chart-track {
+  overflow: hidden;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: rgba(36, 124, 138, 0.1);
+}
+
+.dashboard-chart-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--primary-deep));
+}
+
+.admin-focus-item strong {
+  font-size: 1.5rem;
 }
 
 @media (max-width: 991.98px) {
-  .screen-grid,
-  .screen-grid-large {
+  .screen-kpi-grid,
+  .screen-stage-grid,
+  .screen-chart-grid,
+  .admin-kpi-grid,
+  .admin-workbench-grid,
+  .admin-analysis-grid {
     grid-template-columns: 1fr;
   }
 
+  .screen-header,
+  .admin-section-header,
   .schedule-card,
   .schedule-form {
     flex-direction: column;
@@ -242,6 +558,15 @@ body {
 }
 
 @media (max-width: 767.98px) {
+  .screen-board {
+    width: min(100vw - 20px, 100%);
+    padding-top: 1rem;
+  }
+
+  .screen-header-copy,
+  .screen-meta-panel,
+  .screen-panel,
+  .screen-focus-panel,
   .panel-card,
   .glass-board {
     padding: 1.15rem;

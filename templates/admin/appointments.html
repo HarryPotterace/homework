@@ -1,13 +1,41 @@
 {% extends "admin/base.html" %}
 
 {% block title %}预约处理{% endblock %}
+{% block admin_nav_key %}appointments{% endblock %}
+{% block admin_page_title %}预约处理{% endblock %}
+{% block admin_page_intro %}在不改变原有流程的前提下，集中处理咨询预约状态、查看备注和排班信息。{% endblock %}
+
+{% block admin_overview %}
+<section class="row g-3">
+  <div class="col-lg-8">
+    <div class="admin-section-card h-100">
+      <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center">
+        <div>
+          <h2 class="h5 mb-1">待处理视图</h2>
+          <p class="text-secondary mb-0">下表保留原始状态更新表单，适合在咨询时段前后快速确认进度。</p>
+        </div>
+        <span class="badge rounded-pill text-bg-primary">共 {{ appointments|length }} 条</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="admin-section-card h-100">
+      <h2 class="h5 mb-1">操作提示</h2>
+      <p class="text-secondary mb-0">状态修改仍沿用既有表单字段与提交方式，不增加任何新后端依赖。</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
 {% block admin_content %}
-<div class="panel-card">
-  <h2 class="h4 mb-3">预约处理</h2>
+<div class="d-flex flex-column gap-3">
+  <div>
+    <h2 class="h4 mb-1">预约清单</h2>
+    <p class="text-secondary mb-0">支持值班人员逐条核验学生身份、咨询师排班、预约时间和备注信息。</p>
+  </div>
   <div class="table-responsive">
-    <table class="table align-middle">
-      <thead>
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
         <tr>
           <th>学生</th>
           <th>咨询师</th>
@@ -20,25 +48,32 @@
       <tbody>
         {% for item in appointments %}
         <tr>
-          <td>{{ item.user.student_no }} / {{ item.user.nickname }}</td>
+          <td>
+            <div class="fw-semibold">{{ item.user.nickname }}</div>
+            <div class="text-secondary small">{{ item.user.student_no }}</div>
+          </td>
           <td>{{ item.schedule.counselor_name }}</td>
           <td>{{ item.schedule.schedule_date }} {{ item.schedule.slot }}</td>
-          <td>{{ item.status }}</td>
-          <td>{{ item.note or '无' }}</td>
+          <td><span class="badge rounded-pill text-bg-light border">{{ item.status }}</span></td>
+          <td class="text-secondary">{{ item.note or '无' }}</td>
           <td>
-            <form method="post" class="d-flex gap-2">
+            <form method="post" class="d-flex flex-column flex-md-row gap-2">
               <input type="hidden" name="appointment_id" value="{{ item.id }}">
               <select class="form-select form-select-sm" name="status">
                 {% for status in ['待确认', '已确认', '已完成', '已取消'] %}
                 <option value="{{ status }}" {% if item.status == status %}selected{% endif %}>{{ status }}</option>
                 {% endfor %}
               </select>
-              <button class="btn btn-sm btn-primary rounded-pill">更新</button>
+              <button class="btn btn-sm btn-primary rounded-pill px-3">更新</button>
             </form>
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="6" class="text-center text-secondary">暂无预约记录</td></tr>
+        <tr>
+          <td colspan="6" class="p-4">
+            <div class="admin-empty">暂无预约记录</div>
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>

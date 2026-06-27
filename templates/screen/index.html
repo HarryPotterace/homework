@@ -3,64 +3,123 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>学院心理态势脱敏看板</title>
+    <title>学院心理态势脱敏数据看板</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   </head>
-  <body class="screen-body">
-    <main class="screen-shell">
+  <body class="screen-body" data-page="screen-dashboard">
+    <main class="screen-board">
       <header class="screen-header">
-        <div>
-          <p class="screen-kicker">Large Screen Dashboard</p>
+        <div class="screen-header-copy">
+          <p class="screen-kicker">Situation Board</p>
           <h1>学院心理态势脱敏数据看板</h1>
+          <p class="screen-subtitle">围绕当前关注规模、本周变化和预约热度，帮助值班与巡检快速识别态势。</p>
         </div>
-        <div class="screen-clock">仅展示脱敏聚合数据</div>
+        <div class="screen-meta-panel">
+          <span class="screen-meta-label">页面刷新时间</span>
+          <time id="screen-timestamp" class="screen-meta-value">页面刷新时间加载中</time>
+          <p class="screen-meta-note">仅展示脱敏后的汇总数据</p>
+        </div>
       </header>
-      <section class="screen-grid">
-        <article class="screen-card">
-          <span>测评总数</span>
-          <strong>{{ summary.kpis.assessments }}</strong>
+
+      {% set focus = summary.screen_focus %}
+      <section id="screen-kpis" class="screen-kpi-grid" aria-label="核心指标">
+        <article class="screen-kpi-card">
+          <span>当前需关注人数</span>
+          <strong>{{ focus.attention_total }}</strong>
+          <small>来自测评与行为情绪的聚合计数</small>
         </article>
-        <article class="screen-card">
-          <span>预约总数</span>
-          <strong>{{ summary.kpis.appointments }}</strong>
+        <article class="screen-kpi-card">
+          <span>本周测评人数</span>
+          <strong>{{ focus.weekly_assessments }}</strong>
+          <small>按现有脱敏汇总口径展示</small>
         </article>
-        <article class="screen-card">
-          <span>树洞条数</span>
-          <strong>{{ summary.kpis.posts }}</strong>
+        <article class="screen-kpi-card">
+          <span>本周预约人数</span>
+          <strong>{{ focus.weekly_appointments }}</strong>
+          <small>用于判断咨询接待压力</small>
         </article>
-        <article class="screen-card">
-          <span>学生总数</span>
-          <strong>{{ summary.kpis.students }}</strong>
+        <article class="screen-kpi-card">
+          <span>匿名表达活跃度</span>
+          <strong>{{ focus.vent_activity }}</strong>
+          <small>树洞与表达入口的累计活跃量</small>
         </article>
       </section>
-      <section class="screen-grid screen-grid-large">
-        <article class="screen-panel">
-          <h2>情绪分布</h2>
-          <ul>
-            {% for emotion, count in summary.emotion_counts.items() %}
-            <li><span>{{ emotion }}</span><strong>{{ count }}</strong></li>
-            {% endfor %}
-          </ul>
+
+      <section class="screen-stage-grid">
+        <article id="screen-focus-panel" class="screen-focus-panel">
+          <div class="screen-panel-header">
+            <div>
+              <p class="screen-panel-kicker">Focus</p>
+              <h2>值班关注焦点</h2>
+            </div>
+          </div>
+          <div class="screen-focus-list">
+            <div class="screen-focus-item">
+              <span>当前需关注人数</span>
+              <strong>{{ focus.attention_total }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>本周测评人数</span>
+              <strong>{{ focus.weekly_assessments }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>本周预约人数</span>
+              <strong>{{ focus.weekly_appointments }}</strong>
+            </div>
+            <div class="screen-focus-item">
+              <span>匿名表达活跃度</span>
+              <strong>{{ focus.vent_activity }}</strong>
+            </div>
+          </div>
+          <p class="screen-note">仅展示脱敏后的汇总数据，用于汇报、巡检和值班观察。</p>
         </article>
-        <article class="screen-panel">
-          <h2>量表使用情况</h2>
-          <ul>
-            {% for scale, count in summary.scale_stats.items() %}
-            <li><span>{{ scale }}</span><strong>{{ count }}</strong></li>
-            {% endfor %}
-          </ul>
-        </article>
-        <article class="screen-panel">
-          <h2>预约热度</h2>
-          <ul>
-            {% for item in summary.schedule_hotspots %}
-            <li><span>{{ item.date }}</span><strong>{{ item.count }}</strong></li>
-            {% else %}
-            <li><span>暂无预约</span><strong>0</strong></li>
-            {% endfor %}
-          </ul>
-        </article>
+
+        <div class="screen-chart-grid">
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Emotion</p>
+                <h2>情绪分布</h2>
+              </div>
+            </div>
+            <div
+              id="screen-emotion-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.emotion_counts | tojson }}'
+            ></div>
+          </article>
+
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Appointments</p>
+                <h2>预约热度</h2>
+              </div>
+            </div>
+            <div
+              id="screen-appointment-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.schedule_hotspots | tojson }}'
+            ></div>
+          </article>
+
+          <article class="screen-panel">
+            <div class="screen-panel-header">
+              <div>
+                <p class="screen-panel-kicker">Scale Usage</p>
+                <h2>量表使用情况</h2>
+              </div>
+            </div>
+            <div
+              id="screen-scale-chart"
+              class="screen-chart"
+              data-screen-series='{{ summary.scale_stats | tojson }}'
+            ></div>
+          </article>
+        </div>
       </section>
     </main>
+
+    <script src="{{ url_for('static', filename='js/screen.js') }}"></script>
   </body>
 </html>

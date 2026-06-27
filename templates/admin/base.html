@@ -1,24 +1,129 @@
 {% extends "base.html" %}
 
+{% block head %}
+{{ super() }}
+<style>
+  .admin-shell {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .admin-hero {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.08), rgba(25, 135, 84, 0.08));
+    border: 1px solid rgba(13, 110, 253, 0.12);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .admin-nav-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .admin-nav-card {
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .admin-nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.75rem 1.5rem rgba(15, 23, 42, 0.08);
+  }
+
+  .admin-nav-card.is-active {
+    border-color: rgba(13, 110, 253, 0.3);
+    background: rgba(13, 110, 253, 0.06);
+  }
+
+  .admin-nav-card small {
+    display: block;
+    color: var(--bs-secondary-color);
+  }
+
+  .admin-section-card {
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.04);
+  }
+
+  .admin-empty {
+    border: 1px dashed rgba(15, 23, 42, 0.14);
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--bs-secondary-color);
+    background: rgba(248, 249, 250, 0.7);
+  }
+  @media (max-width: 767.98px) {
+    .admin-hero {
+      padding: 1.25rem;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+{% set current_admin_nav = self.admin_nav_key()|trim %}
 <div class="container">
-  <div class="panel-card admin-header mb-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-      <div>
-        <h1 class="h3 mb-1">心理中心后台</h1>
-        <p class="text-secondary mb-0">当前角色：{{ admin_role or '未登录' }}</p>
+  <div class="admin-shell">
+    <section class="admin-hero">
+      <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start">
+        <div>
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="badge rounded-pill text-bg-primary">Admin Console</span>
+            <span class="text-secondary small">当前角色：{{ admin_role or '未登录' }}</span>
+          </div>
+          <h1 class="h2 mb-2">{% block admin_page_title %}心理中心后台{% endblock %}</h1>
+          <p class="text-secondary mb-0">{% block admin_page_intro %}面向咨询师与管理员的业务查看与处理页面。{% endblock %}</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          {% block admin_page_actions %}{% endblock %}
+          {% if admin_logged_in %}
+          <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('admin.logout') }}">退出后台</a>
+          {% endif %}
+        </div>
       </div>
-      <div class="d-flex flex-wrap gap-2">
-        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.dashboard') }}">统计总览</a>
-        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.assessments') }}">测评记录</a>
-        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.vents') }}">树洞记录</a>
-        <a class="btn btn-outline-primary rounded-pill" href="{{ url_for('admin.appointments') }}">预约处理</a>
-        {% if admin_logged_in %}
-        <a class="btn btn-primary rounded-pill" href="{{ url_for('admin.logout') }}">退出后台</a>
-        {% endif %}
-      </div>
-    </div>
+    </section>
+
+    <section class="admin-nav-grid">
+      <a class="admin-nav-card {% if current_admin_nav == 'dashboard' %}is-active{% endif %}" href="{{ url_for('admin.dashboard') }}">
+        <strong>统计总览</strong>
+        <small>查看核心指标与趋势摘要</small>
+      </a>
+      <a class="admin-nav-card {% if current_admin_nav == 'assessments' %}is-active{% endif %}" href="{{ url_for('admin.assessments') }}">
+        <strong>测评记录</strong>
+        <small>汇总量表结果与时间分布</small>
+      </a>
+      <a class="admin-nav-card {% if current_admin_nav == 'vents' %}is-active{% endif %}" href="{{ url_for('admin.vents') }}">
+        <strong>树洞记录</strong>
+        <small>查看匿名发帖与情绪标签</small>
+      </a>
+      <a class="admin-nav-card {% if current_admin_nav == 'appointments' %}is-active{% endif %}" href="{{ url_for('admin.appointments') }}">
+        <strong>预约处理</strong>
+        <small>跟进咨询排班与状态变更</small>
+      </a>
+    </section>
+
+    {% block admin_overview %}{% endblock %}
+
+    <section class="admin-section-card">
+      {% block admin_content %}{% endblock %}
+    </section>
   </div>
-  {% block admin_content %}{% endblock %}
 </div>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% block admin_scripts %}{% endblock %}
+{% endblock %}
+
+{% block admin_nav_key %}{% endblock %}
