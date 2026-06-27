@@ -4,7 +4,7 @@
 
 **Goal:** 构建一个覆盖学生端、后台端和大屏端的智慧校园心理辅导与情绪感知交互系统，并同步交付完整文档与数据库脚本。
 
-**Architecture:** 使用 Flask 单体应用承载三端页面与少量 AJAX 接口，业务逻辑按认证、测评、情绪、预约、统计拆分。以 MySQL 为正式数据存储，测试阶段允许使用 SQLite，报告和部署文档统一围绕这一实现展开。
+**Architecture:** 使用 Flask 单体应用承载三端页面与少量 AJAX 接口，业务逻辑按认证、测评、情绪、预约、统计拆分。运行环境统一使用 MySQL，报告和部署文档围绕唯一数据库实现展开。
 
 **Tech Stack:** Flask, Jinja2, Bootstrap, JavaScript, MySQL, PyMySQL, pytest
 

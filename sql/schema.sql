@@ -4,6 +4,16 @@ CREATE DATABASE IF NOT EXISTS mental_health_system
 
 USE mental_health_system;
 
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS behavior_logs;
+DROP TABLE IF EXISTS vent_posts;
+DROP TABLE IF EXISTS assessment_records;
+DROP TABLE IF EXISTS scale_questions;
+DROP TABLE IF EXISTS scales;
+DROP TABLE IF EXISTS counselors_schedule;
+DROP TABLE IF EXISTS admins;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   student_no VARCHAR(20) NOT NULL UNIQUE,
@@ -38,7 +48,8 @@ CREATE TABLE scale_questions (
   content TEXT NOT NULL,
   CONSTRAINT fk_scale_questions_scale_code
     FOREIGN KEY (scale_code) REFERENCES scales(code)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  UNIQUE KEY uk_scale_question_order (scale_code, question_order)
 );
 
 CREATE TABLE assessment_records (
@@ -62,7 +73,7 @@ CREATE TABLE vent_posts (
   content TEXT NOT NULL,
   emotion VARCHAR(20) NOT NULL,
   risk_level VARCHAR(20) NOT NULL,
-  is_anonymous BOOLEAN NOT NULL DEFAULT TRUE,
+  is_anonymous TINYINT(1) NOT NULL DEFAULT 1,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_vent_posts_user_id
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -90,14 +101,14 @@ CREATE TABLE counselors_schedule (
   title VARCHAR(50) NOT NULL,
   schedule_date VARCHAR(20) NOT NULL,
   slot VARCHAR(50) NOT NULL,
-  is_available BOOLEAN NOT NULL DEFAULT TRUE
+  is_available TINYINT(1) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE appointments (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   schedule_id INT NOT NULL,
-  status VARCHAR(20) NOT NULL DEFAULT '待确认',
+  status VARCHAR(20) NOT NULL DEFAULT 'pending',
   note VARCHAR(255) NOT NULL DEFAULT '',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_appointments_user_id

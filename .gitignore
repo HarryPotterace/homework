@@ -4,3 +4,6 @@ __pycache__/
 .env
 .worktrees/
 worktrees/
+instance/
+server*.log
+.mysql-local/

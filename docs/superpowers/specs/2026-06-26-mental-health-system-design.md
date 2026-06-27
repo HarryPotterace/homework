@@ -103,7 +103,7 @@
 - 表现层：Jinja2 模板 + Bootstrap + 自定义 CSS/JS。
 - 控制层：Flask 路由按学生端、后台、大屏、API 拆分。
 - 业务层：认证、测评、情绪分析、预约、统计服务。
-- 数据层：MySQL 持久化业务数据，SQLite 仅用于测试或本地快速运行。
+- 数据层：MySQL 持久化业务数据，系统运行环境不允许切换到其他数据库。
 
 ### 5.2 路由边界
 - 学生端：`/`、`/register`、`/login`、`/profile`、`/assessment`、`/vent`、`/emotion`、`/appointments`

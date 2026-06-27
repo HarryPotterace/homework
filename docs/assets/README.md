@@ -46,9 +46,18 @@
   - 类谱系树 Mermaid 源文件。
 - `docs/assets/capture-checklist.md`
   - 页面截图、测试附件和导出顺序清单。
+- `docs/assets/test-evidence/`
+  - 自动化测试原始输出留档。
 
 ## 5. 当前状态
 - 命名规范和用途已确定。
 - 三张结构图的源码已经生成，待导出成图片。
-- 页面截图和终端截图仍需在最终演示环境中人工采集。
+- 已补统一版关键页面截图：
+  - `docs/assets/screenshots/fig-01-student-home.png`
+  - `docs/assets/screenshots/fig-07-admin-dashboard.png`
+  - `docs/assets/screenshots/fig-09-screen-dashboard.png`
+- 已补自动化测试文本证据：
+  - `docs/assets/test-evidence/pytest-integrated-ui-2026-06-27.txt`
+  - `docs/assets/test-evidence/pytest-full-2026-06-27.txt`
+- 剩余页面截图和终端截图仍需在最终演示环境中人工采集。
 - 测试表格已经在 `docs/test-report.md` 形成底稿，可直接转成报告表格。

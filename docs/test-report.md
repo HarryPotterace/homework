@@ -27,6 +27,7 @@
   - `tests/test_admin_and_screen.py`
   - `tests/test_sql_assets.py`
   - `tests/test_backend_modernization.py`
+  - `tests/test_mysql_and_integrated_ui.py`
 
 ### 4.2 人工流程测试
 按三端实际操作路径执行：
@@ -53,18 +54,29 @@
 ## 5. 当前自动化测试结果
 
 ### 5.1 当前结果
-截至 `2026-06-26` 当前代码基线，执行：
+截至 `2026-06-27` 统一集成分支 `feat/backend-core`，执行：
 
 ```powershell
+python -m pytest -q tests/test_mysql_and_integrated_ui.py
 python -m pytest -q
 ```
 
 结果为：
-- `feat/student-ui` 分支：`26 passed`
-- `feat/admin-screen` 分支：`28 passed`
-- 说明：三端关键页面优化按工作树分支隔离开发，当前已分别完成各自分支内的全量自动化验证；最终统一分支合并后需再执行一次总体验证并补终端截图。
+- 集成回归测试：`5 passed`
+- 全量自动化测试：`40 passed`
+- 说明：学生端优化页、后台统一版、看板页和 MySQL-only 运行时约束已合并到同一 Flask 服务内验证，不再存在分支间双版本页面。
 
-### 5.2 覆盖内容
+### 5.2 集成与运行时证据
+- 统一服务访问地址：`http://127.0.0.1:5000/`
+- 已验证页面：`/`、`/admin/login`、`/screen`
+- 运行数据库：MySQL，`127.0.0.1:3307`
+- 环境变量：`.env` 指向 `mysql+pymysql://mental_app:***@127.0.0.1:3307/mental_health_system?charset=utf8mb4`
+- 运行时约束：非测试环境若未配置 `DATABASE_URL` 或不是 `mysql+pymysql://...`，应用启动即报错；测试环境仅允许显式注入测试数据库 URI
+- 测试输出留档：
+  - `docs/assets/test-evidence/pytest-integrated-ui-2026-06-27.txt`
+  - `docs/assets/test-evidence/pytest-full-2026-06-27.txt`
+
+### 5.3 覆盖内容
 
 | 测试项 | 当前状态 | 对应测试 |
 | --- | --- | --- |
@@ -85,6 +97,10 @@ python -m pytest -q
 | SQL 表结构资源存在性 | 通过 | `test_sql_assets.py` |
 | SQL 初始化数据存在性 | 通过 | `test_sql_assets.py` |
 | 后端现代化保护项 | 通过 | `test_backend_modernization.py` |
+| 统一版学生首页 UI | 通过 | `test_mysql_and_integrated_ui.py` |
+| 统一版大屏看板 UI | 通过 | `test_mysql_and_integrated_ui.py` |
+| MySQL-only 运行时限制 | 通过 | `test_mysql_and_integrated_ui.py` |
+| 测试环境数据库覆盖行为 | 通过 | `test_mysql_and_integrated_ui.py` |
 
 ## 6. 人工功能测试表
 
@@ -95,19 +111,25 @@ python -m pytest -q
 | F-03 | 个人信息修改 | 昵称与联系方式可更新 | 待录入截图 |
 | F-04 | PHQ-9 / GAD-7 测评 | 计算得分、生成建议、记录入库 | 待录入截图 |
 | F-05 | 匿名树洞发布 | 不展示身份信息，生成情绪标签 | 待录入截图 |
-| F-06 | 学生首页支持入口 | 可直接进入测评、树洞、预约，并可见隐私说明 | 待录入截图 |
+| F-06 | 学生首页支持入口 | 可直接进入测评、树洞、预约，并可见隐私说明 | 已采集 `fig-01-student-home.png` |
 | F-07 | 情绪感知页 | 行为采集后显示情绪和界面模式 | 待录入截图 |
 | F-08 | 预约创建与取消 | 预约成功并锁定时段，取消后释放时段 | 待录入截图 |
-| F-09 | 后台总览工作台 | 可查看待处理预约、需关注树洞和图形化统计 | 待录入截图 |
-| F-10 | 大屏展示 | 显示态势 KPI、图表和脱敏说明，不暴露身份字段 | 待录入截图 |
+| F-09 | 后台总览工作台 | 可查看待处理预约、需关注树洞和图形化统计 | 已采集 `fig-07-admin-dashboard.png` |
+| F-10 | 大屏展示 | 显示态势 KPI、图表和脱敏说明，不暴露身份字段 | 已采集 `fig-09-screen-dashboard.png` |
+
+当前截图补证：
+- 已采集统一版学生端首页：`docs/assets/screenshots/fig-01-student-home.png`
+- 已采集统一版后台总览页：`docs/assets/screenshots/fig-07-admin-dashboard.png`
+- 已采集统一版大屏看板页：`docs/assets/screenshots/fig-09-screen-dashboard.png`
+- 已保存自动化测试输出：`docs/assets/test-evidence/pytest-full-2026-06-27.txt`
 
 ## 7. 性能测试记录
 
 | 编号 | 页面/操作 | 测试环境 | 结果 | 结论 |
 | --- | --- | --- | --- | --- |
-| P-01 | 首页首次加载 | Windows 11 + Python 3.13 + Flask 测试客户端 + 临时 SQLite | 平均 `1.09 ms`，最小 `0.42 ms`，最大 `12.46 ms` | 本地渲染响应快 |
-| P-02 | 测评提交到结果展示 | Windows 11 + Python 3.13 + Flask 测试客户端 + 临时 SQLite | 平均 `44.20 ms`，最小 `9.85 ms`，最大 `269.06 ms` | 含入库与结果计算，处于课程演示可接受范围 |
-| P-03 | 大屏首屏渲染 | Windows 11 + Python 3.13 + Flask 测试客户端 + 临时 SQLite | 平均 `4.90 ms`，最小 `3.71 ms`，最大 `19.41 ms` | 聚合统计页本地响应稳定 |
+| P-01 | 首页首次加载 | Windows 11 + Python 3.13 + Flask 测试客户端 + 隔离测试数据库 | 平均 `1.09 ms`，最小 `0.42 ms`，最大 `12.46 ms` | 本地渲染响应快 |
+| P-02 | 测评提交到结果展示 | Windows 11 + Python 3.13 + Flask 测试客户端 + 隔离测试数据库 | 平均 `44.20 ms`，最小 `9.85 ms`，最大 `269.06 ms` | 含入库与结果计算，处于课程演示可接受范围 |
+| P-03 | 大屏首屏渲染 | Windows 11 + Python 3.13 + Flask 测试客户端 + 隔离测试数据库 | 平均 `4.90 ms`，最小 `3.71 ms`，最大 `19.41 ms` | 聚合统计页本地响应稳定 |
 
 性能测试说明：
 - 测量方式：使用 Flask `test_client()` 对关键路由重复请求，首页和大屏各 20 次，测评提交 10 次。
@@ -133,7 +155,8 @@ python -m pytest -q
 - 情绪感知页根据行为规则返回 `平静 / 焦虑 / 低落` 和界面模式。
 
 ## 10. 后续待补内容
-- 页面截图编号与插图。
+- 剩余页面截图：`fig-02` 到 `fig-06`、`fig-08`。
 - 兼容性测试实测数据。
 - 人工测试结果分析段落。
-- `python -m pytest -q` 终端截图。
+- `python -m pytest -q` 终端截图（当前已保留文本证据，截图待补）。
+- `fig-10` 到 `fig-12` 结构图导出图片。

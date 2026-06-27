@@ -7,6 +7,13 @@
 ## 2. 最终提交目录命名
 - 根目录命名：`班级-姓名-学号`
 
+## 2.1 当前状态清单（`2026-06-27`）
+- 统一代码分支：已在 `feat/backend-core` 集成学生端、后台端、大屏端优化页面。
+- 数据库运行边界：已改为 MySQL-only，非测试环境禁止使用 SQLite 或其他数据库。
+- 自动化测试：已执行 `python -m pytest -q`，当前为 `40 passed`。
+- 已补统一版截图：`fig-01`、`fig-07`、`fig-09`。
+- 仍待补最终资产：`fig-02` 到 `fig-06`、`fig-08`、`fig-10` 到 `fig-12`、兼容性实机记录、正式 Word 报告。
+
 ## 3. 必须包含
 
 ### 3.1 源码工程
@@ -43,17 +50,19 @@
 - 仅用于仓库管理的底稿文件
 
 ## 5. 报告插图检查
-- `fig-01` 到 `fig-09` 页面截图齐全
-- `fig-10-system-flow.png` 已由 `docs/assets/system-flow.md` 导出
-- `fig-11-er-diagram.png` 已由 `docs/assets/er-diagram.md` 导出
-- `fig-12-class-tree.png` 已由 `docs/assets/class-tree.md` 导出
-- 功能、性能、兼容性测试表已插入报告
+- `fig-01`、`fig-07`、`fig-09` 已采集
+- `fig-02` 到 `fig-06`、`fig-08` 待补
+- `fig-10-system-flow.png` 待由 `docs/assets/system-flow.md` 导出
+- `fig-11-er-diagram.png` 待由 `docs/assets/er-diagram.md` 导出
+- `fig-12-class-tree.png` 待由 `docs/assets/class-tree.md` 导出
+- 功能、性能、兼容性测试表待插入正式 Word 报告
 
 ## 6. 测试证据检查
 - 自动化测试命令 `python -m pytest -q` 已重新执行
-- 自动化测试截图已保存
-- 兼容性测试已在手机 Chrome、PC Chrome、PC Edge 和 `1920x1080` 大屏实机验证
-- 人工功能测试截图已按 `docs/assets/capture-checklist.md` 采集
+- 自动化测试文本证据已留档到 `docs/assets/test-evidence/pytest-full-2026-06-27.txt`
+- 自动化测试截图仍待人工补采
+- 兼容性测试尚未在手机 Chrome、PC Chrome、PC Edge 和 `1920x1080` 大屏实机验证
+- 人工功能测试截图已部分采集，详见 `docs/assets/capture-checklist.md`
 
 ## 7. 内容一致性检查
 - 报告中的路由、模块名、数据表名与源码一致

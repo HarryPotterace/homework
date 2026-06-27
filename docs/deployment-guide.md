@@ -106,7 +106,8 @@ DATABASE_URL=mysql+pymysql://root:password@127.0.0.1:3306/mental_health_system?c
 
 ### 6.2 `DATABASE_URL`
 - 正式 MySQL 连接串。
-- 若不配置，应用会退回到 `sqlite:///mental_health_system.db`，适合快速本地演示，不适合作为正式提交演示环境。
+- 必须显式配置，未配置时应用会直接拒绝启动。
+- 运行环境只允许 `mysql+pymysql://...` 格式连接串，不允许退回到其他数据库。
 
 ## 7. 启动方式
 
